@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Ng2NodeMongoCore (N2NMC)</title>
+		
+		<!-- bower components start -->
+		<script src="/public/bower_components/jquery-2.2.4.min/index.js"></script>
+		<link href="/public/bower_components/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
+		<script src="/public/bower_components/bootstrap-css/js/bootstrap.min.js"></script>
+		<script src="/public/bower_components/d3/d3.min.js"></script>
+		<script src="/public/bower_components/nvd3/build/nv.d3.min.js"></script>
+		<link href="/public/bower_components/nvd3/build/nv.d3.min.css" rel="stylesheet">
+		<link href="/public/bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<!-- bower components end -->
+		
+		<!-- Angular 2.0 start -->
+		<script src="/node_modules/zone.js/dist/zone.min.js"></script>
+		<script src="/node_modules/reflect-metadata/Reflect.js"></script>
+		<!-- Angular 2.0 end -->
+		
+		<!-- load app in dev mode start -->
+		<!--
+		<script src="/node_modules/systemjs/dist/system.src.js"></script>
+		<script src="systemjs.config.js"></script>
+		<script>System.import('app').catch(function(err){console.error(err);});</script>
+		-->
+		<!-- load app in dev mode start -->
+
+		<!-- load app in production mode start -->
+		<script src="/public/js/bundle.min.js"></script>
+		<!-- load app in production mode end -->
+
+		<link href="/public/css/bundle.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<base href="/">
+		<root></root>
+		<span class="spinner" id="init-spinner">Loading Angular 2.0 ...</span>
+	</body>
+</html>
