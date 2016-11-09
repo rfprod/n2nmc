@@ -71,7 +71,7 @@ Now open your browser and type in the address bar
 http://localhost:8080/
 ```
 
-SPAMT is up and running.
+N2NMC is up and running.
 
 ### Testing
 

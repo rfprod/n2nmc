@@ -19,5 +19,12 @@
 		"test/e2e",
 		"typings/main",
 		"typings/main.d.ts"
-	]
+	],
+
+	"atom": {
+		"rewriteTsconfig": false,
+		"formatOnSave": false
+	},
+	"compileOnSave": false,
+	"buildOnSave": false
 }
