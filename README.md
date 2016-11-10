@@ -4,9 +4,26 @@
 
 Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular2.
 
-### Integrations
+### Project structure
 
-* [`Twitter`](https://twitter.com/)
+* `./app` - server
+  * `./app/config` - configurations
+  * `./app/models` - db models
+  * `./app/routes` - routes
+  * `./app/utils` - utilities
+* `./public` - client
+  * `./public/app` - main module and routes
+    * `./public/app/components` - components' scripts (development)
+    * `./public/app/scss` - stylesheets (development)
+    * `./public/app/services` - services' scripts (development)
+    * `./public/app/views` - components' templates
+  * `./public/css/` - bundled styles (production)
+  * `./public/img/` - images
+  * `./public/js/` - bubdled scripts (production)
+* `./test` - client/server tests
+  * `./test/client` - client tests
+  * `./test/e2e` - end to end tests
+  * `./test/server` - server tests
 
 # Start
 
@@ -34,8 +51,6 @@ This will install the N2NMC components into the `n2nmc` directory in your projec
 Create a file named `.env` in the root directory. This file should contain:
 
 ```
-TWITTER_KEY=twitter-key
-TWITTER_SECRET=twitter-secret
 MONGO_URI=mongodb://localhost:27017/n2nmc
 PORT=8080
 APP_URL=http://localhost:8080/
@@ -50,8 +65,6 @@ for example
 required vars
 
 ```
-TWITTER_KEY=twitter-key
-TWITTER_SECRET=twitter-secret
 APP_URL=application-url
 MONGO_USR=database-user-name
 MONGO_PASS=database-user-password

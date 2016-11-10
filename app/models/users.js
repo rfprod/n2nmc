@@ -17,11 +17,6 @@ let User = new Schema({
 		lastName:				String,	// user input
 		city:						String,	// user input
 		country:				String	// user input
-	},
-	twitter: {
-		id:							String,	// sync
-		displayName:		String,	// sync
-		username:				String	// sync
 	}
 });
 

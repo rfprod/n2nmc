@@ -1,9 +1,7 @@
 'use strict';
 
 var LocalStrategy = require('passport-local').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
 var User = require('../models/users');
-var configAuthTwitter = require('./auth-twitter');
 var crypto = require('crypto');
 
 module.exports = function (passport) {
@@ -15,31 +13,6 @@ module.exports = function (passport) {
 			done(err, user);
 		});
 	});
-	passport.use(new TwitterStrategy({
-		consumerKey: configAuthTwitter.twitterAuth.clientID,
-		consumerSecret: configAuthTwitter.twitterAuth.clientSecret,
-		callbackURL: configAuthTwitter.twitterAuth.callbackURL
-	},function(token, tokenSecret, profile, done) {
-		console.log('passport profile');
-		console.log(profile);
-		process.nextTick(function () {
-			User.findOne({ 'twitter.id': profile.id }, function (err, user) {
-				if (err) return done(err);
-				if (user) return done(null, user);
-				else {
-					var newUser = new User();
-					newUser.twitter.id = profile.id;
-					newUser.twitter.username = profile.username;
-					newUser.twitter.displayName = profile.displayName;
-					newUser.nbrClicks.clicks = 0;
-					newUser.save(function (err) {
-						if (err) throw err;
-						return done(err, newUser);
-					});
-				}
-			});
-		});
-	}));
 	
 	function generateDerivate(password, storedSalt){
 		var salt, derivate, obj;
