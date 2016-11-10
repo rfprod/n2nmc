@@ -14,18 +14,21 @@ var AppComponent = (function () {
     function AppComponent(el, emitter) {
         this.el = el;
         this.emitter = emitter;
+        this.showSpinner = true;
         console.log('this.el.nativeElement', this.el.nativeElement);
     }
     AppComponent.prototype.startSpinner = function () {
         console.log('spinner start');
+        this.showSpinner = true;
     };
     AppComponent.prototype.stopSpinner = function () {
         console.log('spinner stop');
+        this.showSpinner = false;
     };
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
         console.log('ngOnInit: AppComponent initialized');
-        $('#init-spinner').remove();
+        $('#init').remove();
         this.subscription = this.emitter.getEmitter().subscribe(function (message) {
             console.log('app consuming event:', message);
             if (message.sys === 'start spinner') {
@@ -45,7 +48,7 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'root',
-            template: "\n\t\t<app-nav></app-nav>\n\t\t<router-outlet></router-outlet>\n\t\t<app-info></app-info>\n\t",
+            template: "\n\t\t<app-nav></app-nav>\n\t\t<router-outlet></router-outlet>\n\t\t<app-info></app-info>\n\t\t<span id=\"spinner\" *ngIf=\"showSpinner\"><img src=\"../public/img/gears.svg\"/></span>\n\t",
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef, event_emitter_service_1.EventEmitterService])
     ], AppComponent);

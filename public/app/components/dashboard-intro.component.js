@@ -148,11 +148,10 @@ var DashboardIntroComponent = (function () {
                 _this.ws.close();
             }
         });
-        this.getServerStaticData(function () {
-            _this.emitSpinnerStopEvent();
-        });
         this.getPublicData(function () {
-            _this.emitSpinnerStopEvent();
+            _this.getServerStaticData(function () {
+                _this.emitSpinnerStopEvent();
+            });
         });
     };
     DashboardIntroComponent.prototype.ngOnDestroy = function () {
