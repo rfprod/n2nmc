@@ -12,32 +12,32 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 require('rxjs/Rx');
-var UserDetailsService = (function () {
-    function UserDetailsService(http) {
+var UsersListService = (function () {
+    function UsersListService(http) {
         this.http = http;
-        this.appDataUrl = window.location.origin + '/dummy';
+        this.appDataUrl = window.location.origin + '/users';
     }
-    UserDetailsService.prototype.extractData = function (res) {
+    UsersListService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
-    UserDetailsService.prototype.handleError = function (error) {
+    UsersListService.prototype.handleError = function (error) {
         var errMsg = (error.message) ? error.message :
             error.status ? "$[error.status] - $[error.statusText]" : 'Server error';
         console.log(errMsg);
         return Observable_1.Observable.throw(errMsg);
     };
-    UserDetailsService.prototype.getUserDetails = function () {
+    UsersListService.prototype.getUsersList = function () {
         // had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
         return this.http.get(this.appDataUrl)
             .map(this.extractData)
             .catch(this.handleError);
     };
-    UserDetailsService = __decorate([
+    UsersListService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], UserDetailsService);
-    return UserDetailsService;
+    ], UsersListService);
+    return UsersListService;
 }());
-exports.UserDetailsService = UserDetailsService;
-//# sourceMappingURL=user-details.service.js.map
+exports.UsersListService = UsersListService;
+//# sourceMappingURL=users-list.service.js.map

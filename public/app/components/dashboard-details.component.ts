@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../services/event-emitter.service';
-import { UserDetailsService } from '../services/user-details.service';
+import { UsersListService } from '../services/users-list.service';
 
 declare var $: JQueryStatic;
 
@@ -12,7 +12,7 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 	constructor(
 		public el: ElementRef,
 		private emitter: EventEmitterService,
-		private userDetailsService: UserDetailsService
+		private usersListService: UsersListService
 	) {
 		console.log('this.el.nativeElement:', this.el.nativeElement);
 	}
@@ -21,7 +21,7 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 	public labelDetails = [];
 	public errorMessage: string;
 	private getUserDetails(userId, callback) {
-		this.userDetailsService.getUserDetails().subscribe(
+		this.usersListService.getUsersList().subscribe(
 			data => this.labelDetails = data,
 			error => this.errorMessage = <any> error,
 			() => {

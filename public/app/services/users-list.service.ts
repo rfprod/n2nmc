@@ -5,8 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 @Injectable()
-export class UserDetailsService {
-	public appDataUrl: string = window.location.origin + '/dummy';
+export class UsersListService {
+	public appDataUrl: string = window.location.origin + '/users';
 	constructor (private http: Http) {}
 
 	public extractData(res: Response) {
@@ -21,7 +21,7 @@ export class UserDetailsService {
 		return Observable.throw(errMsg);
 	}
 
-	public getUserDetails(): Observable<any[]> { // tslint:disable-line
+	public getUsersList(): Observable<any[]> { // tslint:disable-line
 		// had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
 		return this.http.get(this.appDataUrl)
 			.map(this.extractData)
