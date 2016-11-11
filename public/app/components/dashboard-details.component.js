@@ -16,65 +16,49 @@ var DashboardDetailsComponent = (function () {
         this.el = el;
         this.emitter = emitter;
         this.usersListService = usersListService;
-        this.publicData = [{ users: [] }, { labels: [] }];
-        this.labelDetails = [];
-        this.orderProp = 'timestamp';
+        this.usersList = [];
+        /*
+        *	sort
+        */
+        this.orderProp = 'role';
         console.log('this.el.nativeElement:', this.el.nativeElement);
     }
-    DashboardDetailsComponent.prototype.getUserDetails = function (userId, callback) {
+    DashboardDetailsComponent.prototype.getUsersList = function (callback) {
         var _this = this;
-        this.usersListService.getUsersList().subscribe(function (data) { return _this.labelDetails = data; }, function (error) { return _this.errorMessage = error; }, function () {
-            console.log('getUserDetails done');
-            callback(_this.labelDetails);
+        this.usersListService.getUsersList().subscribe(function (data) { return _this.usersList = data; }, function (error) { return _this.errorMessage = error; }, function () {
+            console.log('getUserList done');
+            callback(_this.usersList);
         });
     };
-    DashboardDetailsComponent.prototype.showLabelDetailsPreview = function (event) {
-        var _this = this;
+    DashboardDetailsComponent.prototype.showDetails = function (event) {
         // had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
         console.log('mouse enter');
-        var domEls = event.target.parentElement.querySelectorAll('span');
-        if (domEls[1].innerHTML === '') {
-            this.emitSpinnerStartEvent();
-            this.getUserDetails(event.target.id, function (labelDetails) {
-                var obj = labelDetails[0];
-                console.log(obj);
-                domEls[1].innerHTML = '<i class="fa fa-music" aria-hidden="true"></i> ' + obj.track_count;
-                domEls[2].innerHTML = '<i class="fa fa-list" aria-hidden="true"></i> ' + obj.playlist_count;
-                domEls[3].innerHTML = '<i class="fa fa-star" aria-hidden="true"></i> ' + obj.public_favorites_count;
-                domEls[4].innerHTML = '<i class="fa fa-users" aria-hidden="true"></i> ' + obj.followers_count;
-                _this.emitSpinnerStopEvent();
-                setTimeout(function () {
-                    domEls[0].style.display = 'none';
-                }, 1000);
-            });
-        }
-        else {
-            domEls[0].style.display = 'flex';
-        }
+        var domEl = event.target.querySelector('.details');
+        console.log('domEl:', domEl);
+        domEl.style.display = 'flex';
     };
-    DashboardDetailsComponent.prototype.hideLabelDetailsPreview = function (event) {
+    DashboardDetailsComponent.prototype.hideDetails = function (event) {
         // had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
         console.log('mouse leave');
-        var domEls = event.target.parentElement.querySelectorAll('span');
-        if (domEls[1].innerHTML !== '') {
-            domEls[0].style.display = 'none';
-        }
+        var domEl = event.target.querySelector('.details');
+        console.log('domEl:', domEl);
+        domEl.style.display = 'none';
     };
-    Object.defineProperty(DashboardDetailsComponent.prototype, "labelSearchQuery", {
+    Object.defineProperty(DashboardDetailsComponent.prototype, "searchQuery", {
         get: function () {
-            return this.labelSearchValue;
+            return this.searchValue;
         },
         set: function (val) {
-            this.emitLabelSearchValueChangeEvent(val);
+            this.emitSearchValueChangeEvent(val);
         },
         enumerable: true,
         configurable: true
     });
-    DashboardDetailsComponent.prototype.emitLabelSearchValueChangeEvent = function (val) {
-        console.log('labelSearchValue changed to:', val);
+    DashboardDetailsComponent.prototype.emitSearchValueChangeEvent = function (val) {
+        console.log('searchValue changed to:', val);
         this.emitter.emitEvent({ search: val });
     };
-    Object.defineProperty(DashboardDetailsComponent.prototype, "sortLabelsByCriterion", {
+    Object.defineProperty(DashboardDetailsComponent.prototype, "sortByCriterion", {
         get: function () {
             return this.orderProp;
         },
@@ -88,6 +72,9 @@ var DashboardDetailsComponent = (function () {
         console.log('orderProp changed to:', val);
         this.emitter.emitEvent({ sort: val });
     };
+    /*
+    *	spinner
+    */
     DashboardDetailsComponent.prototype.emitSpinnerStartEvent = function () {
         console.log('root spinner start event emitted');
         this.emitter.emitEvent({ sys: 'start spinner' });
@@ -106,7 +93,7 @@ var DashboardDetailsComponent = (function () {
             console.log('/data consuming event:', JSON.stringify(message));
             if (message.search || message.search === '') {
                 console.log('searching:', message.search);
-                var domElsUsername = _this.el.nativeElement.querySelector('ul.labels').querySelectorAll('#label-username');
+                var domElsUsername = _this.el.nativeElement.querySelector('ul.listing').querySelectorAll('#full-name');
                 for (var _i = 0, domElsUsername_1 = domElsUsername; _i < domElsUsername_1.length; _i++) {
                     var usernameObj = domElsUsername_1[_i];
                     if (usernameObj.innerHTML.toLowerCase().indexOf(message.search.toLowerCase()) !== -1) {
@@ -118,18 +105,21 @@ var DashboardDetailsComponent = (function () {
                 }
             }
             if (message.sort) {
+                /*
+                * sorting rules
+                */
                 console.log('sorting by:', message.sort);
-                if (message.sort === 'timestamp') {
-                    _this.publicData[1].labels.sort(function (a, b) {
-                        return b.timestamp - a.timestamp;
+                if (message.sort === 'registered') {
+                    _this.usersList.sort(function (a, b) {
+                        return b.registered - a.registered;
                     });
                 }
-                if (message.sort === 'username') {
-                    _this.publicData[1].labels.sort(function (a, b) {
-                        if (a.permalink < b.permalink) {
+                if (message.sort === 'role') {
+                    _this.usersList.sort(function (a, b) {
+                        if (a.role < b.role) {
                             return -1;
                         }
-                        if (a.permalink > b.permalink) {
+                        if (a.role > b.role) {
                             return 1;
                         }
                         return 0;
@@ -137,11 +127,14 @@ var DashboardDetailsComponent = (function () {
                 }
             }
         });
+        this.getUsersList(function (userlList) {
+            console.log('users list:', userlList);
+            _this.emitSpinnerStopEvent();
+        });
     };
     DashboardDetailsComponent.prototype.ngOnDestroy = function () {
         console.log('ngOnDestroy: DashboardDetailsComponent destroyed');
         this.subscription.unsubscribe();
-        this.emitSpinnerStopEvent(); // this is relevant in case user switches to another view fast, not allowing data to load
     };
     DashboardDetailsComponent = __decorate([
         core_1.Component({

@@ -35,10 +35,28 @@ module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-d
 		User.find({}, (err, docs) => {
 			if (err) { throw err; }
 			console.log('users list', docs);
+			let resData = [],
+				dataUnit = {};
+			for (let i in docs) {
+				if (docs[i]) {
+					dataUnit = {
+						id: docs[i].id,
+						role:	docs[i].role,
+						registered:	docs[i].registered,
+						lastLogin: docs[i].lastLogin,
+						email: docs[i].userExtended.email,
+						firstName: docs[i].userExtended.firstName,
+						lastName: docs[i].userExtended.lastName,
+						city: docs[i].userExtended.city,
+						country: docs[i].userExtended.country
+					};
+					resData.push(dataUnit);
+				}
+			}
 			res.setHeader('Cache-Control', 'no-cache, no-store');
 			res.format({
 				'application/json': function(){
-					res.send(docs);
+					res.send(resData);
 				}
 			});
 		});

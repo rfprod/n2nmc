@@ -120,5 +120,45 @@ body {
 				text-align: center;
 			}
 		}
+		#dashboard-data {
+            .listing {
+                list-style: none;
+                padding: 0;
+                li {
+                    padding-left: 1.5em;
+                    &:before {
+                        content: "\f02e";
+                        font-family: FontAwesome;
+                        display: inline-block;
+                        margin-left: -1.5em;
+                        width: 1.5em;
+                    }
+                    h3, span {
+                        display: inline-block;
+                        &:hover {
+                            cursor: default;
+                        }
+                    }
+                    div {
+                        &:hover {
+                            cursor: default;
+                        }
+                    }
+                }
+                .item {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: stretch;
+                    .details {
+                        padding-left: 0.5em;
+                        padding-right: 0.5em;
+                        flex-grow: 1;
+                        display: none;
+                        justify-content: space-around;
+                        align-items: stretch;
+                    }
+                }
+            }
+		}
 	}
 }

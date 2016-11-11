@@ -17,63 +17,56 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 		console.log('this.el.nativeElement:', this.el.nativeElement);
 	}
 	private subscription: any;
-	public publicData: Array<any> = [ {users: []}, {labels: []} ];
-	public labelDetails = [];
+	public usersList: Array<any> = [];
 	public errorMessage: string;
-	private getUserDetails(userId, callback) {
+	private getUsersList(callback) {
 		this.usersListService.getUsersList().subscribe(
-			data => this.labelDetails = data,
+			data => this.usersList = data,
 			error => this.errorMessage = <any> error,
 			() => {
-				console.log('getUserDetails done');
-				callback(this.labelDetails);
+				console.log('getUserList done');
+				callback(this.usersList);
 			}
 		);
 	}
-	private showLabelDetailsPreview(event) { // tslint:disable-line
+	private showDetails(event) { // tslint:disable-line
 		// had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
 		console.log('mouse enter');
-		let domEls = event.target.parentElement.querySelectorAll('span');
-		if (domEls[1].innerHTML === '') {
-			this.emitSpinnerStartEvent();
-			this.getUserDetails(event.target.id, (labelDetails) => {
-				let obj = labelDetails[0];
-				console.log(obj);
-				domEls[1].innerHTML = '<i class="fa fa-music" aria-hidden="true"></i> ' + obj.track_count;
-				domEls[2].innerHTML = '<i class="fa fa-list" aria-hidden="true"></i> ' + obj.playlist_count;
-				domEls[3].innerHTML = '<i class="fa fa-star" aria-hidden="true"></i> ' + obj.public_favorites_count;
-				domEls[4].innerHTML = '<i class="fa fa-users" aria-hidden="true"></i> ' + obj.followers_count;
-				this.emitSpinnerStopEvent();
-				setTimeout(() => {
-					domEls[0].style.display = 'none';
-				}, 1000);
-			});
-		}else { domEls[0].style.display = 'flex'; }
+		let domEl = event.target.querySelector('.details');
+		console.log('domEl:', domEl);
+		domEl.style.display = 'flex';
 	}
-	private hideLabelDetailsPreview(event) { // tslint:disable-line
+	private hideDetails(event) { // tslint:disable-line
 		// had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
 		console.log('mouse leave');
-		let domEls = event.target.parentElement.querySelectorAll('span');
-		if (domEls[1].innerHTML !== '') { domEls[0].style.display = 'none'; }
+		let domEl = event.target.querySelector('.details');
+		console.log('domEl:', domEl);
+		domEl.style.display = 'none';
 	}
 
-	private labelSearchValue: string;
-	get labelSearchQuery() {
-		return this.labelSearchValue;
+/*
+*	search
+*/
+	private searchValue: string;
+	get searchQuery() {
+		return this.searchValue;
 	}
-	set labelSearchQuery(val) {
-		this.emitLabelSearchValueChangeEvent(val);
+	set searchQuery(val) {
+		this.emitSearchValueChangeEvent(val);
 	}
-	private emitLabelSearchValueChangeEvent(val) {
-		console.log('labelSearchValue changed to:', val);
+	private emitSearchValueChangeEvent(val) {
+		console.log('searchValue changed to:', val);
 		this.emitter.emitEvent({search: val});
 	}
 
-	public orderProp = 'timestamp';
-	get sortLabelsByCriterion() {
+/*
+*	sort
+*/
+	public orderProp = 'role';
+	get sortByCriterion() {
 		return this.orderProp;
 	}
-	set sortLabelsByCriterion(val) {
+	set sortByCriterion(val) {
 		this.emitOrderPropChangeEvent(val);
 	}
 	private emitOrderPropChangeEvent(val) {
@@ -81,6 +74,9 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 		this.emitter.emitEvent({sort: val});
 	}
 
+/*
+*	spinner
+*/
 	private emitSpinnerStartEvent() {
 		console.log('root spinner start event emitted');
 		this.emitter.emitEvent({sys: 'start spinner'});
@@ -89,6 +85,7 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 		console.log('root spinner stop event emitted');
 		this.emitter.emitEvent({sys: 'stop spinner'});
 	}
+
 	public ngOnInit() {
 		console.log('ngOnInit: DashboardDetailsComponent initialized');
 		this.emitSpinnerStartEvent();
@@ -98,7 +95,7 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 			console.log('/data consuming event:', JSON.stringify(message));
 			if (message.search || message.search === '') {
 				console.log('searching:', message.search);
-				let domElsUsername = this.el.nativeElement.querySelector('ul.labels').querySelectorAll('#label-username');
+				let domElsUsername = this.el.nativeElement.querySelector('ul.listing').querySelectorAll('#full-name');
 				for (let usernameObj of domElsUsername) {
 					if (usernameObj.innerHTML.toLowerCase().indexOf(message.search.toLowerCase()) !== -1) {
 						usernameObj.parentElement.parentElement.style.display = 'block';
@@ -108,25 +105,31 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 				}
 			}
 			if (message.sort) {
+				/*
+				* sorting rules
+				*/
 				console.log('sorting by:', message.sort);
-				if (message.sort === 'timestamp') {
-					this.publicData[1].labels.sort((a, b) => {
-						return b.timestamp - a.timestamp;
+				if (message.sort === 'registered') {
+					this.usersList.sort((a, b) => {
+						return b.registered - a.registered;
 					});
 				}
-				if (message.sort === 'username') {
-					this.publicData[1].labels.sort((a, b) => {
-						if (a.permalink < b.permalink) { return -1; }
-						if (a.permalink > b.permalink) { return 1; }
+				if (message.sort === 'role') {
+					this.usersList.sort((a, b) => {
+						if (a.role < b.role) { return -1; }
+						if (a.role > b.role) { return 1; }
 						return 0;
 					});
 				}
 			}
 		});
+		this.getUsersList((userlList) => {
+			console.log('users list:', userlList);
+			this.emitSpinnerStopEvent();
+		});
 	}
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: DashboardDetailsComponent destroyed');
 		this.subscription.unsubscribe();
-		this.emitSpinnerStopEvent(); // this is relevant in case user switches to another view fast, not allowing data to load
 	}
 }
