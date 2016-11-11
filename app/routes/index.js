@@ -48,10 +48,20 @@ module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-d
 		User.find({}, (err, docs) => {
 			if (err) { throw err; }
 			console.log('count list', docs.length);
+			let stats = [
+				{ key: 'Users', y: 0},
+				{ key: 'Admins', y: 0}
+			];
+			for (let i in docs) {
+				if (docs[i]) {
+					if (docs[i].role === 'admin') stats[1].y++;
+					else stats[0].y++;
+				}
+			}
 			res.setHeader('Cache-Control', 'no-cache, no-store');
 			res.format({
 				'application/json': function(){
-					res.send([{key: 'Users', y: docs.length}]);
+					res.send(stats);
 				}
 			});
 		});
