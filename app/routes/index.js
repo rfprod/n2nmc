@@ -116,7 +116,9 @@ module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-d
 		});
 		ws.on('close', () => {
 			console.log('Persistent websocket: Client disconnected.');
-			ws._socket.setKeepAlive(true);
+			if (ws._socket) {
+				ws._socket.setKeepAlive(true);
+			}
 			clearInterval(sender);
 		});
 		ws.on('error', () => {console.log('Persistent websocket: ERROR');});

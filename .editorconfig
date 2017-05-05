@@ -19,11 +19,7 @@ indent_style = tab
 indent_size = 4
 
 # 2 space indentation for code
-[*.{js,ts,json,sh}]
+[*.{js,ts,json,sh,eslintignore,gitignore,bowerrc}]
 indent_style = tab
 indent_size = 2
 
-# Matches the exact files: package.json, bower.json, .bowerrc
-[{.eslintignore,.gitignore,.bowerrc}]
-indent_style = tab
-indent_size = 2

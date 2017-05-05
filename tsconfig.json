@@ -6,25 +6,25 @@
 		"sourceMap": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
+		"lib": ["es2015", "dom"],
 		"removeComments": false,
-		"noImplicitAny": false
+		"noImplicitAny": false,
+		"suppressImplicitAnyIndexErrors": true
 	},
+	"include": [
+		"public/app",
+		"test/client"
+	],
 	"exclude": [
-		".c9",
 		".git",
 		"app",
 		"node_modules",
 		"public/bower_components",
+		"public/css",
+		"public/img",
+		"public/js",
+		"test/*",
 		"test/server",
-		"test/e2e",
-		"typings/main",
-		"typings/main.d.ts"
-	],
-
-	"atom": {
-		"rewriteTsconfig": false,
-		"formatOnSave": false
-	},
-	"compileOnSave": false,
-	"buildOnSave": false
+		"test/e2e"
+	]
 }

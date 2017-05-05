@@ -6,7 +6,7 @@
 	"description": "Application Core: Angular, NodeJS, MongoDB",
 	"private": true,
 	"dependencies": {
-		"jquery-2.2.4.min": "https://code.jquery.com/jquery-2.2.4.min.js",
+		"jquery": "^2.2.4",
 		"bootstrap-css": "~3.3.6",
 		"d3": ">3.4.4",
 		"nvd3": ">1.8.1",

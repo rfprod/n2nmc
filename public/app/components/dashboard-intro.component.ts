@@ -106,7 +106,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 	}
 
 	private showModal: boolean = false;
-	private toggleModal() { /* tslint:disable-line */
+	private toggleModal() {
 		if (this.showModal) {
 			this.ws.send(JSON.stringify({action: 'pause'}));
 		} else { this.ws.send(JSON.stringify({action: 'get'})); }

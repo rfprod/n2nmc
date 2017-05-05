@@ -29,15 +29,13 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	private showDetails(event) { // tslint:disable-line
-		// had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
+	private showDetails(event) {
 		console.log('mouse enter');
 		let domEl = event.target.querySelector('.details');
 		console.log('domEl:', domEl);
 		domEl.style.display = 'flex';
 	}
-	private hideDetails(event) { // tslint:disable-line
-		// had to disable all tslint rules for previous line, disabling no-unused-variable is buggy
+	private hideDetails(event) {
 		console.log('mouse leave');
 		let domEl = event.target.querySelector('.details');
 		console.log('domEl:', domEl);
