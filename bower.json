@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"author": "rfprod",
 	"license": "MIT",
-	"description": "Application Core: Node, Mongo, Angular",
+	"description": "Application Core: Angular, NodeJS, MongoDB",
 	"private": true,
 	"dependencies": {
 		"jquery-2.2.4.min": "https://code.jquery.com/jquery-2.2.4.min.js",

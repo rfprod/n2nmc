@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"author": "rfprod",
 	"license": "MIT",
-	"description": "Application Core: NodeJS, MongoDB, AngularJS",
+	"description": "Application Core: Angular, NodeJS, MongoDB",
 	"private": true,
 	"main": "server.js",
 	"repository": {

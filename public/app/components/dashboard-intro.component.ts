@@ -21,7 +21,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 	}
 	private subscription: any;
 	public title: string = 'Ng2NodeMongoCore (N2NMC)';
-	public description: string = 'Application core: NodeJS, MongoDB, AngularJS';
+	public description: string = 'Application core: Angular, NodeJS, MongoDB';
 	public host: string = window.location.host;
 	public wsUrl: string = (this.host.indexOf('localhost') !== -1) ? 'ws://' + this.host + '/app-diag/dynamic' : 'ws://' + this.host + ':8000/app-diag/dynamic';
 	public chartOptions: Object = {
