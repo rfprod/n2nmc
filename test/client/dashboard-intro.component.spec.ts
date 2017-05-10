@@ -78,7 +78,7 @@ describe('DashboardIntroComponent', () => {
 			expect(this.component.title).toBeDefined();
 			expect(this.component.title === 'Ng2NodeMongoCore (N2NMC)').toBeTruthy();
 			expect(this.component.description).toBeDefined();
-			expect(this.component.description === 'Application core: NodeJS, MongoDB, AngularJS').toBeTruthy();
+			expect(this.component.description === 'Application core: Angular, NodeJS, MongoDB').toBeTruthy();
 			expect(this.component.host).toBeDefined();
 			expect(this.component.host).toEqual(window.location.host);
 			expect(this.component.wsUrl).toEqual('ws://'+this.component.host+'/app-diag/dynamic');
