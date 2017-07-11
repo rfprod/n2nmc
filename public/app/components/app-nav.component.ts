@@ -25,7 +25,7 @@ export class AppNavComponent implements OnInit, OnDestroy {
 		} else {
 			if (path === 'data') { index = '2'; } else { index = '0'; }
 		}
-		for (let b in this.navButtonsState) {
+		for (const b in this.navButtonsState) {
 			if (b === index) { this.navButtonsState[b] = true; } else { this.navButtonsState[b] = false; }
 		}
 		console.log('navButtonsState:', this.navButtonsState);

@@ -17,12 +17,12 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 		console.log('this.el.nativeElement:', this.el.nativeElement);
 	}
 	private subscription: any;
-	public usersList: Array<any> = [];
+	public usersList: any[] = [];
 	public errorMessage: string;
 	private getUsersList(callback) {
 		this.usersListService.getUsersList().subscribe(
-			data => this.usersList = data,
-			error => this.errorMessage = <any> error,
+			(data) => this.usersList = data,
+			(error) => this.errorMessage = error as any,
 			() => {
 				console.log('getUserList done');
 				callback(this.usersList);
@@ -31,13 +31,13 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 	}
 	private showDetails(event) {
 		console.log('mouse enter');
-		let domEl = event.target.querySelector('.details');
+		const domEl = event.target.querySelector('.details');
 		console.log('domEl:', domEl);
 		domEl.style.display = 'flex';
 	}
 	private hideDetails(event) {
 		console.log('mouse leave');
-		let domEl = event.target.querySelector('.details');
+		const domEl = event.target.querySelector('.details');
 		console.log('domEl:', domEl);
 		domEl.style.display = 'none';
 	}
@@ -93,8 +93,8 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 			console.log('/data consuming event:', JSON.stringify(message));
 			if (message.search || message.search === '') {
 				console.log('searching:', message.search);
-				let domElsUsername = this.el.nativeElement.querySelector('ul.listing').querySelectorAll('#full-name');
-				for (let usernameObj of domElsUsername) {
+				const domElsUsername = this.el.nativeElement.querySelector('ul.listing').querySelectorAll('#full-name');
+				for (const usernameObj of domElsUsername) {
 					if (usernameObj.innerHTML.toLowerCase().indexOf(message.search.toLowerCase()) !== -1) {
 						usernameObj.parentElement.parentElement.style.display = 'block';
 					} else {
