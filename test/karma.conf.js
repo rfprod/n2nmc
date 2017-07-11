@@ -43,16 +43,36 @@ module.exports = function(config){
 		// preprocessors: {},
 
 		browserNoActivityTimeout: 20000,
-		browsers: ['PhantomJS'],
+		customLaunchers: {
+			/*
+			*	this custom launcher requires setting env var CHROME_BIN=chromium-browser
+			*	possible options for env var value depending on what you have installed:
+			*	chromium-browser, chromium, google-chrome
+			*/
+			ChromeHeadless: {
+				base: 'Chrome',
+				flags: [
+					'--headless',
+					'--disable-gpu',
+					// Without a remote debugging port Chrome exits immediately
+					'--remote-debugging-port=9222'
+				]
+			}
+		},
+		browsers: ['ChromeHeadless'],
 		// browsers: ['Chrome'],
 		// browsers : ['Firefox'],
+		/*
+		*	PhantomJS is still applicable here
+		*	but can be safely removed
+		*
+		browsers: ['PhantomJS'],
 		phantomjsLauncher: {
-			/*
-			*	exit phantomjs if a ResourceError is encountered
-			*	useful if karma exits without killing phantomjs)
-			*/
+			// exit phantomjs if a ResourceError is encountered
+			//useful if karma exits without killing phantomjs)
 			exitOnResourceError: true
 		},
+		*/
 		
 		plugins : [
 		//    'karma-chrome-launcher',
