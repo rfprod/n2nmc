@@ -97,11 +97,12 @@ gulp.task('client-unit-test', (done) => {
 
 gulp.task('build-system-js', () => {
 	const builder = systemjsBuilder('/','./systemjs.config.js');
-	builder.buildStatic('app', 'bundle.min.js', {
-		minify: true,
-		mangle: true
-	})
-	.pipe(gulp.dest('./public/js'));
+	builder
+		.buildStatic('app', 'bundle.min.js', {
+			minify: true,
+			mangle: true
+		})
+		.pipe(gulp.dest('./public/js'));
 });
 
 gulp.task('sass-autoprefix-minify-css', () => {
@@ -143,6 +144,8 @@ gulp.task('watch', () => {
 	gulp.watch('./public/app/scss/*.scss', ['sass-autoprefix-minify-css']); // watch app css changes, pack css, minify and put in respective folder
 	//gulp.watch(['./public/app/*.js','./test/client/*.js','./test/karma.conf.js','./test/karma.test-shim.js'], ['client-unit-test']); //watch unit test changes and run tests
 	gulp.watch(['./test/server/test.js'], ['server-test']); // watch server tests changes and run tests
+	gulp.watch(['./app/**', './public/js/*.js', './*.js', './.eslintignore', './.eslintrc.json'], ['eslint']); // watch files to be linted or eslint config files and lint on change
+	gulp.watch(['./public/app/*.ts', './public/app/**/*.ts', './tslint.json'], ['tslint']); // watch files to be linted or eslint config files and lint on change
 });
 
 gulp.task('watch-and-lint', () => {
