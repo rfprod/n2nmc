@@ -2,7 +2,7 @@
 
 ## Overview
 
-Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular2.
+Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular.
 
 ### Project structure
 
@@ -88,11 +88,23 @@ N2NMC is up and running.
 
 ### Testing
 
+#### Server
+
 To test the server execute the following command in the terminal window while in your project's folder when the server is running:
 
 ```
 $ npm run server-test
 ```
+
+#### Client Unit
+
+`HeadlessChrome`: in initial configuration for client unit tests to work you will have to export an environment variable for headless Chrome by appending it to `~/.bashrc`, its value should be set to one of the following options, depending on what you have installed: `chromium-browser, chromium, google-chrome`
+
+```
+export CHROME_BIN=chromium-browser
+```
+
+if you don't want to use headless Chrome, you can use PhantomJS, config for which is present in `karma.conf.js`, but it will probably be removed in future
 
 To test the client execute the following command in the terminal window while in your project's folder:
 
@@ -107,6 +119,14 @@ for single test
 ```
 $ npm run client-test-single-run
 ```
+
+#### Client E2E
+
+```
+$ npm run protractor
+```
+
+#### Code Linting
 
 To lint the code execute the following command in the terminal window while in your project's folder:
 
