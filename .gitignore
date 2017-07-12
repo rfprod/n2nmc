@@ -1,13 +1,23 @@
+# dependencies
 node_modules/
-public/bower_components/
-public/js/bundle.min.js
-public/css/bundle.min.css
+
+# environment variables and logs
+*.env
+.*.env
+*.log
+
+# compiled client app
 public/app/*.js
 public/app/*.js.map
 public/app/**/*.js
 public/app/**/*.js.map
+
+# compiled client tests
 test/client/*.js
 test/client/*.js.map
-*.env
-.*.env
-*.log
+
+# built client app files
+public/js/*.min.js
+public/css/*.min.css
+public/fonts/*.*
+!public/fonts/*.gitkeep

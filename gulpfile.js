@@ -1,6 +1,7 @@
 'use strict';
 
 const gulp = require('gulp'),
+	runSequence = require('run-sequence'),
 	util = require('gulp-util'),
 	concat = require('gulp-concat'),
 	rename = require('gulp-rename'),
@@ -9,6 +10,7 @@ const gulp = require('gulp'),
 	plumber = require('gulp-plumber'),
 	mocha = require('gulp-mocha'),
 	karmaServer = require('karma').Server,
+	uglify = require('gulp-uglify'),
 	sass = require('gulp-sass'),
 	cssnano = require('gulp-cssnano'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -89,6 +91,7 @@ gulp.task('client-unit-test', (done) => {
 			throw new Error('=====\nKarma > Tests Failed\n=====\n', results);
 		}
 		console.log('=====\nKarma > Complete With No Failures\n=====\n', results);
+
 		done();
 	});
 
@@ -96,6 +99,13 @@ gulp.task('client-unit-test', (done) => {
 });
 
 gulp.task('build-system-js', () => {
+	/*
+	*	this task builds angular application
+	*	components, angular modules, and some dependencies
+	*
+	*	nonangular components related to design, styling, data visualization etc.
+	*	are built by another task
+	*/
 	const builder = systemjsBuilder('/','./systemjs.config.js');
 	builder
 		.buildStatic('app', 'bundle.min.js', {
@@ -103,6 +113,51 @@ gulp.task('build-system-js', () => {
 			mangle: true
 		})
 		.pipe(gulp.dest('./public/js'));
+});
+
+gulp.task('pack-vendor-js', () => {
+	/*
+	*	nonangular js bundle
+	*	components related to design, styling, data visualization etc.
+	*/
+	return gulp.src([
+		// sequence is essential
+		'./node_modules/jquery/dist/jquery.js',
+		'./node_modules/bootstrap/dist/js/bootstrap.js',
+		'./node_modules/d3/d3.js',
+		'./node_modules/nvd3/build/nv.d3.js',
+		// angular dependencies start here
+		'./node_modules/zone.js/dist/zone.min.js',
+		'./node_modules/reflect-metadata/Reflect.js'
+	])
+		.pipe(plumber())
+		.pipe(concat('vendor-bundle.js'))
+		.pipe(uglify())
+		.pipe(plumber.stop())
+		.pipe(rename('vendor-bundle.min.js'))
+		.pipe(gulp.dest('./public/js'));
+});
+
+gulp.task('pack-vendor-css', () => {
+	return gulp.src([
+		'./node_modules/bootstrap/dist/css/bootstrap.css',
+		'./node_modules/nvd3/build/nv.d3.css',
+		'./node_modules/components-font-awesome/css/font-awesome.css'
+	])
+		.pipe(plumber())
+		.pipe(concat('vendor-bundle.css'))
+		.pipe(cssnano())
+		.pipe(plumber.stop())
+		.pipe(rename('vendor-bundle.min.css'))
+		.pipe(gulp.dest('./public/css'));
+});
+
+gulp.task('move-vendor-fonts', () => {
+	return gulp.src([
+		'./node_modules/bootstrap/dist/fonts/*.*',
+		'./node_modules/components-font-awesome/fonts/*.*'
+	])
+		.pipe(gulp.dest('./public/fonts'));
 });
 
 gulp.task('sass-autoprefix-minify-css', () => {
@@ -158,7 +213,11 @@ gulp.task('watch-client-and-test', () => {
 	gulp.watch(['./public/app/*.js','./test/client/*.js','./test/karma.conf.js','./test/karma.test-shim.js'], ['client-unit-test']); //watch unit test changes and run tests
 });
 
-gulp.task('default', ['build-system-js','sass-autoprefix-minify-css','database','server','lint','watch']);
+gulp.task('build', (done) => {
+	runSequence('pack-vendor-js', 'pack-vendor-css', 'move-vendor-fonts', 'sass-autoprefix-minify-css', done);
+});
+
+gulp.task('default', ['build-system-js','build','database','server','lint','watch']);
 
 gulp.task('production-start', ['database','server']);
 
