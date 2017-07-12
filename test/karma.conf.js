@@ -4,9 +4,9 @@ module.exports = function(config){
 		basePath : '../',
 		
 		files : [
-			'public/bower_components/jquery/dist/jquery.js',
-			'public/bower_components/d3/d3.js',
-			'public/bower_components/nvd3/build/nv.d3.js',
+			'node_modules/jquery/dist/jquery.js',
+			'node_modules/d3/d3.js',
+			'node_modules/nvd3/build/nv.d3.js',
 
 			'node_modules/core-js/client/shim.js',
 			'node_modules/reflect-metadata/Reflect.js',
@@ -75,9 +75,9 @@ module.exports = function(config){
 		*/
 		
 		plugins : [
-		//    'karma-chrome-launcher',
+		    'karma-chrome-launcher',
 		//    'karma-firefox-launcher',
-			'karma-phantomjs-launcher',
+		//	'karma-phantomjs-launcher',
 			'karma-jasmine'
 		],
 
