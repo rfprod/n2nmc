@@ -2,7 +2,7 @@
 
 const path = process.cwd();
 
-module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-disable-line no-unused-vars
+module.exports = function(app, passport, User, SrvInfo, DataInit) { // eslint-disable-line no-unused-vars
 
 /*
 *	check if data init is needed
@@ -20,19 +20,19 @@ module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-d
 		res.sendFile(path + '/public/index.html');
 	});
 
-	app.get('/dummy', (req, res) => {
+	app.get('/api/dummy', (req, res) => {
 		const headers = req.headers;
 		console.log('headers', headers);
 		const output = [{key: 'Success', y:1}];
 
 		res.format({
-			'application/json': function(){
+			'application/json': () => {
 				res.send(output);
 			}
 		});
 	});
 	
-	app.get('/users', (req, res) => {
+	app.get('/api/users', (req, res) => {
 		User.find({}, (err, docs) => {
 			if (err) { throw err; }
 			console.log('users list', docs);
@@ -54,16 +54,15 @@ module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-d
 					resData.push(dataUnit);
 				}
 			}
-			res.setHeader('Cache-Control', 'no-cache, no-store');
 			res.format({
-				'application/json': function(){
+				'application/json': () => {
 					res.send(resData);
 				}
 			});
 		});
 	});
 
-	app.get('/app-diag/usage', (req, res) => {
+	app.get('/api/app-diag/usage', (req, res) => {
 		User.find({}, (err, docs) => {
 			if (err) { throw err; }
 			console.log('count list', docs.length);
@@ -77,25 +76,23 @@ module.exports = function (app, passport, User, SrvInfo, DataInit) { // eslint-d
 					else stats[0].y++;
 				}
 			}
-			res.setHeader('Cache-Control', 'no-cache, no-store');
 			res.format({
-				'application/json': function(){
+				'application/json': () => {
 					res.send(stats);
 				}
 			});
 		});
 	});
 
-	app.get('/app-diag/static', (req, res) => {
-		res.setHeader('Cache-Control', 'no-cache, no-store');
+	app.get('/api/app-diag/static', (req, res) => {
 		res.format({
-			'application/json': function(){
+			'application/json': () => {
 				res.send(SrvInfo['static']());
 			}
 		});
 	});
 
-	app.ws('/app-diag/dynamic', (ws) => {
+	app.ws('/api/app-diag/dynamic', (ws) => {
 		console.log('websocket opened /app-diag/dynamic');
 		let sender = null;
 		ws.on('message', (msg) => {

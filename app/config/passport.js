@@ -4,17 +4,17 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/users');
 var crypto = require('crypto');
 
-module.exports = function (passport) {
-	passport.serializeUser(function (user, done) {
+module.exports = function(passport) {
+	passport.serializeUser(function(user, done) {
 		done(null, user.id);
 	});
-	passport.deserializeUser(function (id, done) {
-		User.findById(id, function (err, user) {
+	passport.deserializeUser(function(id, done) {
+		User.findById(id, function(err, user) {
 			done(err, user);
 		});
 	});
 	
-	function generateDerivate(password, storedSalt){
+	function generateDerivate(password, storedSalt) {
 		var salt, derivate, obj;
 		
 		if (storedSalt) salt = storedSalt;
@@ -29,9 +29,9 @@ module.exports = function (passport) {
 		usernameField: 'emailLogin',
 		passwordField: 'passwordLogin',
 		passReqToCallback: true
-	},function (req, username, password, done) {
-		process.nextTick(function () {
-			User.findOne({ 'userExtended.email': username }, function (err, user) {
+	}, function(req, username, password, done) {
+		process.nextTick(function() {
+			User.findOne({ 'userExtended.email': username }, function(err, user) {
 				if (err) return done(err);
 				if (!user) return done(null, false, {message: 'Unknown user'});
 				if (user.userExtended.salt) {

@@ -1,7 +1,7 @@
 const os = require('os'),
 	exec = require('child_process').execSync;
 
-exports.static = function () {
+exports.static = () => {
 	return [
 		{
 			name: 'Node.js Version',
@@ -28,7 +28,7 @@ exports.static = function () {
 	];
 };
 
-exports.dynamic = function () {
+exports.dynamic = () => {
 	return [
 		{
 			name: 'Free Memory',

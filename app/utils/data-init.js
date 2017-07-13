@@ -2,7 +2,7 @@ const User = require('../models/users');
 
 module.exports = {
 
-	createDefaultAdmin: function (callback) {
+	createDefaultAdmin: function(callback) {
 		User.find({id: 0}, (err, docs) => {
 			if (err) throw err;
 			if (docs.length == 0) {
@@ -33,7 +33,7 @@ module.exports = {
 		});
 	},
 
-	createDefaultUser: function (callback){
+	createDefaultUser: function(callback) {
 		User.find({id: 1}, (err, docs) => {
 			if (err) throw err;
 			if (docs.length == 0) {
@@ -64,12 +64,11 @@ module.exports = {
 		});
 	},
 
-	initData: function (callback) {
+	initData: function(callback) {
 		console.log('db data initialization');
 		let response = {};
 		this.createDefaultAdmin((admin) => {
 			response.defaultAdminAccount = admin;
-
 			this.createDefaultUser((user) => {
 				response.defaultUserAccount = user;
 				console.log('data initialized:', response);
