@@ -8,9 +8,14 @@ declare var $: JQueryStatic;
 	templateUrl: '/public/app/views/dashboard-nav.html',
 })
 export class AppNavComponent implements OnInit, OnDestroy {
+
 	constructor( private emitter: EventEmitterService ) {}
+
 	private subscription: any;
 	public navButtonsState: boolean[] = [false, false, false];
+
+	public supportedLanguages: any[];
+
 	public switchNavButtons(event, isClick: boolean) {
 		let route, index;
 		console.log('switchNavButtons:', event);
@@ -30,6 +35,7 @@ export class AppNavComponent implements OnInit, OnDestroy {
 		}
 		console.log('navButtonsState:', this.navButtonsState);
 	}
+
 	public stopWS() {
 		/*
 		*	this function should be executed before user is sent to any external resource
@@ -38,8 +44,14 @@ export class AppNavComponent implements OnInit, OnDestroy {
 		console.log('close websocket event emitted');
 		this.emitter.emitEvent({sys: 'close websocket'});
 	}
+
+	public selectLanguage(key: string) {
+		this.emitter.emitEvent({lang: key});
+	}
+
 	public ngOnInit() {
 		console.log('ngOnInit: AppNavComponent initialized');
+
 		// check active route on app init - app-nav loads once on app init
 		this.subscription = this.emitter.getEmitter().subscribe((message) => {
 			console.log('/app-nav consuming event:', message);
@@ -49,7 +61,14 @@ export class AppNavComponent implements OnInit, OnDestroy {
 				this.subscription.unsubscribe();
 			}
 		});
+
+		// init supported languages
+		this.supportedLanguages = [
+			{ key: 'en', name: 'English' },
+			{ key: 'ru', name: 'Russian' }
+		];
 	}
+
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: AppNavComponent destroyed');
 	}

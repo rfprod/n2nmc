@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 
 import { AppComponent } from './app.component';
+import { TRANSLATION_PROVIDERS, TranslatePipe, TranslateService } from './translate/index';
 import { AppNavComponent } from './components/app-nav.component';
 import { AppInfoComponent } from './components/app-info.component';
 import { DashboardIntroComponent } from './components/dashboard-intro.component';
@@ -21,9 +22,9 @@ import { nvD3 } from 'ng2-nvd3';
 declare let $: JQueryStatic;
 
 @NgModule({
-	declarations: [ AppComponent, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardDetailsComponent, nvD3 ],
+	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardDetailsComponent, nvD3 ],
 	imports 		: [ BrowserModule, FormsModule, HttpModule, RouterModule.forRoot(APP_ROUTES) ],
-	providers 	: [ {provide: LocationStrategy, useClass: HashLocationStrategy}, EventEmitterService, UsersListService, ServerStaticDataService, PublicDataService ],
+	providers 	: [ {provide: LocationStrategy, useClass: HashLocationStrategy}, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UsersListService, ServerStaticDataService, PublicDataService ],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],
 	bootstrap 	: [ AppComponent ],
 })
