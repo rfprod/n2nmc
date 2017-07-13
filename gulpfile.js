@@ -21,18 +21,18 @@ let node,
 	mongo,
 	tsc;
 
-function killProcessByName(name){
+function killProcessByName(name) {
 	exec('ps -e | grep '+name, (error, stdout, stderr) => {
 		if (error) throw error;
-		if (stderr) console.log('stderr: ',stderr);
+		if (stderr) console.log('stderr:', stderr);
 		if (stdout) {
 			//console.log('killing running processes:', stdout);
 			const runningProcessesIDs = stdout.match(/\d{3,6}/);
 			runningProcessesIDs.forEach((id) => {
 				exec('kill '+id, (error, stdout, stderr) => {
 					if (error) throw error;
-					if (stderr) console.log('stdout: ', stdout);
-					if (stdout) console.log('stderr: ', stderr);
+					if (stderr) console.log('stdout:', stdout);
+					if (stdout) console.log('stderr:', stderr);
 				});
 			});
 		}
@@ -195,7 +195,7 @@ gulp.task('lint', ['eslint','tslint']);
 gulp.task('watch', () => {
 	gulp.watch(['./server.js', './app/config/*.js', './app/routes/*.js', './app/utils/*.js'], ['server']); // watch server and database changes and restart server
 	gulp.watch(['./server.js', './app/models/*.js'], ['database']); // watch database changes and restart database
-	gulp.watch('./public/app/*.js', ['build-system-js']); // watch app js changes and build system
+	gulp.watch(['./public/app/*.js', './public/app/**/*.js'], ['build-system-js']); // watch app js changes and build system
 	gulp.watch('./public/app/scss/*.scss', ['sass-autoprefix-minify-css']); // watch app css changes, pack css, minify and put in respective folder
 	//gulp.watch(['./public/app/*.js','./test/client/*.js','./test/karma.conf.js','./test/karma.test-shim.js'], ['client-unit-test']); //watch unit test changes and run tests
 	gulp.watch(['./test/server/test.js'], ['server-test']); // watch server tests changes and run tests
