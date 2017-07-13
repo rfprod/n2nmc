@@ -23,6 +23,7 @@
 			"ban-keywords",
 			"check-format"
 		],
-		"trailing-comma": false
+		"trailing-comma": false,
+		"variable-name": false
 	}
 }
