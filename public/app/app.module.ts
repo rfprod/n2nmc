@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -24,7 +24,7 @@ declare let $: JQueryStatic;
 @NgModule({
 	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardDetailsComponent, nvD3 ],
 	imports 		: [ BrowserModule, FormsModule, HttpModule, RouterModule.forRoot(APP_ROUTES) ],
-	providers 	: [ {provide: LocationStrategy, useClass: HashLocationStrategy}, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UsersListService, ServerStaticDataService, PublicDataService ],
+	providers 	: [ {provide: LocationStrategy, useClass: PathLocationStrategy}, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UsersListService, ServerStaticDataService, PublicDataService ],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],
 	bootstrap 	: [ AppComponent ],
 })
