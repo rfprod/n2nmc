@@ -28,14 +28,32 @@ const User = require('./app/models/users.js'),
 
 process.title = 'ng2nodemongo';
 
-app.use('/public', express.static(process.cwd() + '/public'));
+const cwd = process.cwd();
+
+app.use('/public', express.static(cwd + '/public'));
+app.use((req, res, next) => {
+	/*
+	*	this is required for angular to load urls properly when user requests url directly, e.g.
+	*	current conditions: client index page is served fro all request
+	*	which do not include control words: api, css, fonts, img, js
+	*	control words explanation:
+	*	api - is part of path that returnd data over REST API
+	* css, fonts, img, js - are directories containing client files
+	*/
+	//console.log('req.path:', req.path);
+	if (/(api|css|fonts|img|js)/.test(req.path)) {
+		return next();
+	} else {
+		res.sendFile(cwd + '/public/index.html');
+	}
+});
 /*
 *	Next three lines are needed only for development purposes
 *	should be commeneted out in production
 */
-app.use('/node_modules', express.static(process.cwd() + '/node_modules'));
-app.use('/systemjs.config.js', express.static(process.cwd() + '/systemjs.config.js'));
-app.use('/systemjs.config.extras.js', express.static(process.cwd() + '/systemjs.config.extras.js'));
+app.use('/node_modules', express.static(cwd + '/node_modules'));
+app.use('/systemjs.config.js', express.static(cwd + '/systemjs.config.js'));
+app.use('/systemjs.config.extras.js', express.static(cwd + '/systemjs.config.extras.js'));
 
 if (process.env.OPENSHIFT_MONGODB_DB_HOST) {
 	const store = new MongoStore({
