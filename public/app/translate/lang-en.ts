@@ -10,6 +10,7 @@ export const LANG_EN_TRANSLATIONS = {
 	login_instructions: 'Provide an email and a password, please',
 	email: 'Email',
 	password: 'Password',
+	forget_my_address: 'Forget my address',
 	submit: 'Submit',
 	data: 'Data'
 };

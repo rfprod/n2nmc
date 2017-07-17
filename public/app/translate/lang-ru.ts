@@ -10,6 +10,7 @@ export const LANG_RU_TRANSLATIONS = {
 	login_instructions: 'Пожалуйста, введите адрес эл. почты и пароль',
 	email: 'Эл. почта',
 	password: 'Пароль',
+	forget_my_address: 'Забудь мой адрес',
 	submit: 'Отправить',
 	data: 'Данные',
 };

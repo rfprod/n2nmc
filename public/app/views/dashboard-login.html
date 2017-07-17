@@ -10,15 +10,16 @@
 			<form id="login-form" class="form" [formGroup]="loginForm" (ngSubmit)="submitForm()" novalidate>
 				<legend>{{ 'login_instructions' | translate }}</legend>
 				<div class="form-group has-feedback" [ngClass]="{ 'has-error' : loginForm.controls.email.invalid }">
-					<label for="email">{{ 'email' | translate }}</label>
 					<input type="text" class="form-control" name="email" [formControl]="loginForm.controls.email" placeholder="{{ 'email' | translate }}" required />
+					<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 					<p *ngIf="loginForm.controls.email.invalid" class="help-block">invalid value, required: email, at least 7 characters long</p>
 				</div>
 				<div class="form-group has-feedback" [ngClass]="{ 'has-error': loginForm.controls.password.invalid }">
-					<label for="password">{{ 'password' | translate}}</label>
 					<input type="text" class="form-control" name="password" [formControl]="loginForm.controls.password" placeholder="{{ 'password' | translate }}" required />
+					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 					<p *ngIf="loginForm.controls.password.invalid" class="help-block">invalid value, required: at least 1 character</p>
 				</div>
+				<span *ngIf="userService.getUser().email" class="pull-right"><a (click)="resetForm()">{{ 'forget_my_address' | translate }}</a></span>
 				<button class="btn btn-success" type="submit" [disabled]="loginForm.pristine || loginForm.invalid" [attr.aria-label]="submit">
 					{{ 'submit' | translate }}
 				</button>

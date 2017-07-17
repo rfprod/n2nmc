@@ -9,7 +9,7 @@ export class UsersListService {
 	public appDataUrl: string = window.location.origin + '/api/users';
 	constructor(private http: Http) {}
 
-	public extractData(res: Response) {
+	public extractData(res: Response): object {
 		const body = res.json();
 		return body || {};
 	}
