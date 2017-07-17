@@ -23,14 +23,20 @@ body {
 	h3:hover, h4:hover, p:hover {cursor: default;}
 
 	#spinner {
-		display: block;
+		display: flex;
 		position: fixed;
-		width: 100%;
-		top: 40%;
-		height: auto !important;
+		align-items: center;
+		justify-content: center;
+		width: 100vw;
+		height: 100vh;
 		color: #ffffff;
 		text-align: center;
 		z-index: 1000;
+
+		img {
+			width: 20vh;
+			height: auto!important;
+		}
 	}
 
 	#flex-nav {
