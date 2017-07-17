@@ -106,8 +106,7 @@ gulp.task('build-system-js', () => {
 	*	nonangular components related to design, styling, data visualization etc.
 	*	are built by another task
 	*/
-	const builder = systemjsBuilder('/','./systemjs.config.js');
-	builder
+	return systemjsBuilder('/','./systemjs.config.js')
 		.buildStatic('app', 'bundle.min.js', {
 			minify: true,
 			mangle: true
@@ -190,8 +189,6 @@ gulp.task('tslint', () => {
 		}));
 });
 
-gulp.task('lint', ['eslint','tslint']);
-
 gulp.task('watch', () => {
 	gulp.watch(['./server.js', './app/config/*.js', './app/routes/*.js', './app/utils/*.js'], ['server']); // watch server and database changes and restart server
 	gulp.watch(['./server.js', './app/models/*.js'], ['database']); // watch database changes and restart database
@@ -214,12 +211,20 @@ gulp.task('watch-client-and-test', () => {
 });
 
 gulp.task('build', (done) => {
-	runSequence('pack-vendor-js', 'pack-vendor-css', 'move-vendor-fonts', 'sass-autoprefix-minify-css', done);
+	runSequence('build-system-js', 'pack-vendor-js', 'pack-vendor-css', 'move-vendor-fonts', 'sass-autoprefix-minify-css', done);
 });
 
-gulp.task('default', ['build-system-js','build','database','server','lint','watch']);
+gulp.task('lint', (done) => {
+	runSequence('eslint', 'tslint', done);
+});
 
-gulp.task('production-start', ['database','server']);
+gulp.task('default', (done) => {
+	runSequence('database', 'server', 'build', 'lint', 'watch', done);
+});
+
+gulp.task('production-start', (done) => {
+	runSequence('database', 'server', 'build', done);
+});
 
 process.on('exit', () => {
 	if (node) node.kill();
