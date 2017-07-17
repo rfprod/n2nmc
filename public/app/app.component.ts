@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { EventEmitterService } from './services/event-emitter.service';
 import { TranslateService } from './translate/index';
 
@@ -15,12 +16,15 @@ declare let $: JQueryStatic;
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-	private subscription: any;
-	private showSpinner: boolean = true;
+	private subscriptions: any = {
+		eventEmitter: undefined,
+		router: undefined
+	};
+	private showSpinner: boolean = false;
 
 	public supportedLanguages: any[];
 
-	constructor( public el: ElementRef, private emitter: EventEmitterService, private _translate: TranslateService ) {
+	constructor( public el: ElementRef, private emitter: EventEmitterService, private _translate: TranslateService, private router: Router ) {
 		console.log('this.el.nativeElement', this.el.nativeElement);
 	}
 
@@ -51,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		$('#init').remove(); // remove initialization text
 
 		// listen event emitter control messages
-		this.subscription = this.emitter.getEmitter().subscribe((message) => {
+		this.subscriptions.eventEmitter = this.emitter.getEmitter().subscribe((message) => {
 			console.log('app consuming event:', message);
 			if (message.sys === 'start spinner') { // spinner control message
 				console.log('starting spinner');
@@ -78,11 +82,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
 		// set default language
 		this.selectLanguage('en');
+
+		this.subscriptions.router = this.router.events.subscribe((event) => {
+			console.log(' > ROUTER EVENT:', event);
+		});
 	}
 
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: AppComponent destroyed');
-		this.subscription.unsubscribe();
+		this.subscriptions.eventEmitter.unsubscribe();
+		this.subscriptions.router.unsubscribe();
 	}
 
 }

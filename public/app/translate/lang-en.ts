@@ -4,7 +4,12 @@ export const LANG_EN_NAME = 'en';
 export const LANG_EN_TRANSLATIONS = {
 	help: 'Help',
 	intro: 'Intro',
-	data: 'Data',
 	title: 'Application core',
-	diag: 'Platform Diagnostics'
+	diag: 'Platform Diagnostics',
+	login: 'Log in',
+	login_instructions: 'Provide an email and a password, please',
+	email: 'Email',
+	password: 'Password',
+	submit: 'Submit',
+	data: 'Data'
 };

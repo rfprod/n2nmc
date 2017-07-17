@@ -12,7 +12,7 @@ export class AppNavComponent implements OnInit, OnDestroy {
 	constructor( private emitter: EventEmitterService ) {}
 
 	private subscription: any;
-	public navButtonsState: boolean[] = [false, false, false];
+	public navButtonsState: boolean[] = [false, false, false, false];
 
 	public supportedLanguages: any[];
 
@@ -25,10 +25,15 @@ export class AppNavComponent implements OnInit, OnDestroy {
 			} else { route = event.target.href; }
 		} else { route = event.route; }
 		const path = route.substring(route.lastIndexOf('/') + 1, route.length);
+		console.log(' >> PATH', path);
 		if (path === 'intro') {
 			index = '1';
+		} else if (path === 'login') {
+			index = '2';
+		} else if (path === 'data') {
+			index = '3';
 		} else {
-			if (path === 'data') { index = '2'; } else { index = '0'; }
+			index = '0';
 		}
 		for (const b in this.navButtonsState) {
 			if (b === index) { this.navButtonsState[b] = true; } else { this.navButtonsState[b] = false; }

@@ -10,7 +10,7 @@ import { EventEmitterService } from '../services/event-emitter.service';
 	`,
 })
 export class AppInfoComponent implements OnInit, OnDestroy {
-	constructor( private emitter: EventEmitterService ) {}
+	constructor(private emitter: EventEmitterService) {}
 	private subscription: any;
 	private hideInfo: boolean = true;
 	private badges = [ // tslint:disable-line
@@ -34,7 +34,7 @@ export class AppInfoComponent implements OnInit, OnDestroy {
 	public ngOnInit() {
 		console.log('ngOnInit: AppInfoComponent initialized');
 		this.subscription = this.emitter.getEmitter().subscribe((message) => {
-			console.log('app-info consuming event:', message);
+			// console.log('app-info consuming event:', message);
 			if (message.appInfo === 'hide') { this.hideInfo = true; }
 			if (message.appInfo === 'show') { this.hideInfo = false; }
 		});
