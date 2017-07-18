@@ -4,8 +4,9 @@ import { DashboardLoginComponent } from './components/dashboard-login.component'
 import { DashboardDetailsComponent } from './components/dashboard-details.component';
 
 export const APP_ROUTES: Routes = [
-	{path: '', redirectTo: 'intro', pathMatch: 'full'},
 	{path: 'intro', component: DashboardIntroComponent},
 	{path: 'login', component: DashboardLoginComponent},
-	{path: 'data', component: DashboardDetailsComponent}
+	{path: 'data', component: DashboardDetailsComponent},
+	{path: '', redirectTo: 'intro', pathMatch: 'full'},
+	{path: '**', redirectTo: 'intro'}
 ];
