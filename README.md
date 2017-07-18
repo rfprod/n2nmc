@@ -104,8 +104,6 @@ $ npm run server-test
 export CHROME_BIN=chromium-browser
 ```
 
-if you don't want to use headless Chrome, you can use PhantomJS, config for which is present in `karma.conf.js`, but it will probably be removed in future
-
 To test the client execute the following command in the terminal window while in your project's folder:
 
 for continuous testing

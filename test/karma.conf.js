@@ -62,22 +62,10 @@ module.exports = function(config){
 		browsers: ['ChromeHeadless'],
 		// browsers: ['Chrome'],
 		// browsers : ['Firefox'],
-		/*
-		*	PhantomJS is still applicable here
-		*	but can be safely removed
-		*
-		browsers: ['PhantomJS'],
-		phantomjsLauncher: {
-			// exit phantomjs if a ResourceError is encountered
-			//useful if karma exits without killing phantomjs)
-			exitOnResourceError: true
-		},
-		*/
 		
 		plugins : [
 		    'karma-chrome-launcher',
 		//    'karma-firefox-launcher',
-		//	'karma-phantomjs-launcher',
 			'karma-jasmine'
 		],
 
