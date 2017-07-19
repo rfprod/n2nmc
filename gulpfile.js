@@ -127,7 +127,8 @@ gulp.task('pack-vendor-js', () => {
 		'./node_modules/nvd3/build/nv.d3.js',
 		// angular dependencies start here
 		'./node_modules/zone.js/dist/zone.min.js',
-		'./node_modules/reflect-metadata/Reflect.js'
+		'./node_modules/reflect-metadata/Reflect.js',
+		'./node-modules/web-animations-js/web-animations.min.js'
 	])
 		.pipe(plumber())
 		.pipe(concat('vendor-bundle.js'))

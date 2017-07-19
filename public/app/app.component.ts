@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventEmitterService } from './services/event-emitter.service';
 import { TranslateService } from './translate/index';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 declare let $: JQueryStatic;
 
@@ -13,6 +14,9 @@ declare let $: JQueryStatic;
 		<app-info></app-info>
 		<span id="spinner" *ngIf="showSpinner"><img src="../public/img/gears.svg"/></span>
 	`,
+	animations: [
+		trigger('empty', [])
+	]
 })
 export class AppComponent implements OnInit, OnDestroy {
 
