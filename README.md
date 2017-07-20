@@ -19,7 +19,7 @@ Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular.
     * `./public/app/views` - components' templates
   * `./public/css/` - bundled styles (production)
   * `./public/img/` - images
-  * `./public/js/` - bubdled scripts (production)
+  * `./public/js/` - bundled scripts (production)
 * `./test` - client/server tests
   * `./test/client` - client tests
   * `./test/e2e` - end to end tests
