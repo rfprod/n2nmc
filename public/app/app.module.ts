@@ -22,12 +22,13 @@ import { UsersListService } from './services/users-list.service';
 import { UserService } from './services/user.service';
 import { ServerStaticDataService } from './services/server-static-data.service';
 import { PublicDataService } from './services/public-data.service';
-import { nvD3 } from 'ng2-nvd3';
+
+import { NvD3Component } from 'ng2-nvd3';
 
 declare let $: JQueryStatic;
 
 @NgModule({
-	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, nvD3 ],
+	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, /*nvD3*/ NvD3Component ],
 	imports 		: [ BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, RouterModule.forRoot(APP_ROUTES) ],
 	providers 	: [ {provide: LocationStrategy, useClass: PathLocationStrategy}, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],

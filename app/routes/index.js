@@ -11,7 +11,7 @@ module.exports = function(app, passport, User, SrvInfo, DataInit) { // eslint-di
 
 	DataInit.initData();
 
-// eslint-disable-next-line
+	// eslint-disable-next-line
 /*
 *	routes
 */

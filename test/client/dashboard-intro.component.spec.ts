@@ -1,9 +1,7 @@
 'use strict';
 
-/* global */
-
 import { ElementRef } from '@angular/core';
-import { nvD3 } from 'ng2-nvd3';
+import { NvD3Component } from 'ng2-nvd3';
 import { EventEmitterService } from '../../public/app/services/event-emitter.service';
 import { ServerStaticDataService } from '../../public/app/services/server-static-data.service';
 import { PublicDataService } from '../../public/app/services/public-data.service';

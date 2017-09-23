@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { EventEmitterService } from '../services/event-emitter.service';
 import { ServerStaticDataService } from '../services/server-static-data.service';
 import { PublicDataService } from '../services/public-data.service';
@@ -87,7 +87,10 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 	}
 	private getPublicData(callback) {
 		this.publicDataService.getData().subscribe(
-			(data) => this.appUsageData = data,
+			(data) => {
+				this.nvd3.clearElement();
+				this.appUsageData = data;
+			},
 			(error) => this.errorMessage = error as any,
 			() => {
 				console.log('getPublicData done, data:', this.appUsageData);
@@ -112,6 +115,8 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 		} else { this.ws.send(JSON.stringify({action: 'get'})); }
 		this.showModal = (!this.showModal) ? true : false;
 	}
+
+	@ViewChild('chart') private nvd3: any;
 
 	public ngOnInit() {
 		console.log('ngOnInit: DashboardIntroComponent initialized');

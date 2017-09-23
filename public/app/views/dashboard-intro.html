@@ -4,7 +4,7 @@
 			<h3>{{title}} <a (click)="toggleModal()"><i class="fa fa-cogs"></i></a></h3>
 			<p>{{ 'title' | translate }}: {{description}}</p>
 
-			<nvd3 [options]="chartOptions" [data]="appUsageData"></nvd3>
+			<nvd3 #chart [options]="chartOptions" [data]="appUsageData"></nvd3>
 
 			<span id="modal" *ngIf="showModal">
 				<button type="button" class="close" (click)="toggleModal()"><span>&times;</span></button>
