@@ -6,7 +6,15 @@
 		
 		<script src="/public/js/vendor-bundle.min.js"></script>
 		<link href="/public/css/vendor-bundle.min.css" rel="stylesheet">
-		
+
+		<link href="/public/css/bundle.min.css" rel="stylesheet">
+
+		<base href="/">
+	</head>
+	<body>
+		<root></root>
+		<span id="init">Loading Angular...</span>
+
 		<!-- load app in dev mode start -->
 		<!--
 		<script src="/node_modules/systemjs/dist/system.src.js"></script>
@@ -18,12 +26,5 @@
 		<!-- load app in production mode start -->
 		<script src="/public/js/bundle.min.js"></script>
 		<!-- load app in production mode end -->
-
-		<link href="/public/css/bundle.min.css" rel="stylesheet">
-	</head>
-	<body>
-		<base href="/">
-		<root></root>
-		<span id="init">Loading Angular...</span>
 	</body>
 </html>
