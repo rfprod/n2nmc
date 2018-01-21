@@ -11,6 +11,10 @@
 		"noImplicitAny": false,
 		"suppressImplicitAnyIndexErrors": true
 	},
+	"angularCompilerOptions": {
+		"fullTemplateTypeCheck": true,
+		"preserveWhiteSpace": false
+	},
 	"include": [
 		"public/app",
 		"test/client"
