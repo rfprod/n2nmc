@@ -1,4 +1,4 @@
-# Ng2NodeMongoCore (N2NMC)
+# Ng2NodeMongoCore (Ng2NMC)
 
 ![build](https://travis-ci.org/rfprod/ng2nmc.svg?branch=master)
 
@@ -31,7 +31,7 @@ Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular.
 
 ### Requirements
 
-In order to run your own copy of N2NMC, you must have the following installed:
+In order to run your own copy of Ng2NMC, you must have the following installed:
 
 - [`Node.js`](https://nodejs.org/)
 - [`NPM`](https://nodejs.org/)
@@ -40,13 +40,13 @@ In order to run your own copy of N2NMC, you must have the following installed:
 
 ### Installation & Startup
 
-To install N2NMC execute the below command in the terminal window while in your projects folder:
+To install Ng2NMC execute the below command in the terminal window while in your projects folder:
 
 ```
 git clone https://github.com/rfprod/ng2nmc.git
 ```
 
-This will install the N2NMC components into the `ng2nmc` directory in your projects folder.
+This will install the Ng2NMC components into the `ng2nmc` directory in your projects folder.
 
 ### Local Environment Variables
 
@@ -82,7 +82,7 @@ Now open your browser and type in the address bar
 http://localhost:8080/
 ```
 
-N2NMC is up and running.
+Ng2NMC is up and running.
 
 ### Testing
 
@@ -132,4 +132,4 @@ $ npm run lint
 
 ## Licenses
 
-* [`N2NMC`](LICENSE.md)
+* [`Ng2NMC`](LICENSE.md)
