@@ -5,6 +5,7 @@ const express = require('express'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	session = require('express-session'),
+	nodemailer = require('nodemailer'),
 	MongoStore = require('connect-mongodb-session')(session),
 	app = express(),
 	expressWs = require('express-ws')(app), // eslint-disable-line no-unused-vars
@@ -19,14 +20,11 @@ require('./app/config/passport')(passport);
 
 const mongo_uri = process.env.MONGO_URI || process.env.OPENSHIFT_MONGODB_DB_URL;
 mongoose.connect(mongo_uri);
-/*
-*	database models and data initialization methods
-*/
 const User = require('./app/models/users.js'),
 	SrvInfo = require('./app/utils/srv-info.js'),
 	DataInit = require('./app/utils/data-init.js');
 
-process.title = 'ng2nodemongo';
+process.title = 'ng2nmc';
 
 const cwd = process.cwd();
 
@@ -86,7 +84,38 @@ app.all('/*', function(req, res, next) {
 	else next();
 });
 
-routes(app, passport, User, SrvInfo, DataInit);
+/*
+* nodemailer usage notice:
+* To use Gmail you may need to configure "Allow Less Secure Apps" (https://www.google.com/settings/security/lesssecureapps)
+* in your Gmail account unless you are using 2FA
+* in which case you would have to create an Application Specific password (https://security.google.com/settings/security/apppasswords).
+* You also may need to unlock your account with "Allow access to your Google account" (https://accounts.google.com/DisplayUnlockCaptcha)
+* to use SMTP.
+*/
+let smtpConfig = {
+	host: process.env.MAILER_HOST,
+	port: process.env.MAILER_PORT,
+	secure: true, // use SSL
+	auth: {
+		type: 'OAuth2',
+		user: process.env.MAILER_EMAIL,
+		clientId: process.env.MAILER_CLIENT_ID,
+		clientSecret: process.env.MAILER_CLIENT_SECRET,
+		refreshToken: process.env.MAILER_REFRESH_TOKEN,
+		accessToken: 'empty'
+	}
+};
+
+const mailTransporter = nodemailer.createTransport(smtpConfig); // reusable transporter object using the default SMTP transport
+mailTransporter.verify((err, success) => {
+	if (err) {
+		console.log('Mail transporter diag error >>', err);
+	} else {
+		console.log('Mail transporter diag success >>', success);
+	}
+});
+
+routes(app, passport, User, SrvInfo, DataInit, mailTransporter);
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 	ip = process.env.OPENSHIFT_NODEJS_IP; // "127.0.0.1" is not specified here on purpose, this env var should be included in .openshift.env
@@ -112,7 +141,7 @@ if (!ip) {
 	});
 } else {
 	/*
-	*   deployment - OPENSHIFT SPECIFIC
+	*   deployment - TODO migrate to Openshift v3
 	*/
 	(() => {
 		/*

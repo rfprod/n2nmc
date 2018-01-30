@@ -22,14 +22,17 @@ let node,
 	tsc;
 
 function killProcessByName(name) {
-	exec('ps -e | grep '+name, (error, stdout, stderr) => {
-		if (error) throw error;
+	exec('pgrep ' + name, (error, stdout, stderr) => {
+		if (error) {
+			// throw error;
+			console.log('killProcessByName, error', error);
+		}
 		if (stderr) console.log('stderr:', stderr);
 		if (stdout) {
 			//console.log('killing running processes:', stdout);
 			const runningProcessesIDs = stdout.match(/\d{3,6}/);
 			runningProcessesIDs.forEach((id) => {
-				exec('kill '+id, (error, stdout, stderr) => {
+				exec('kill ' + id, (error, stdout, stderr) => {
 					if (error) throw error;
 					if (stderr) console.log('stdout:', stdout);
 					if (stdout) console.log('stderr:', stderr);
@@ -39,17 +42,18 @@ function killProcessByName(name) {
 	});
 }
 
-gulp.task('database', () => {
+gulp.task('database', (done) => {
 	if (mongo) mongo.kill();
-	mongo = spawn('mongod', ['--smallfiles', '--nojournal'], {stdio: 'inherit'});
+	mongo = spawn('npm', ['run','mongo-start'], {stdio: 'inherit'});
 	mongo.on('close', (code) => {
 		if (code === 8) {
 			gulp.log('Error detected, waiting for changes...');
 		}
 	});
+	done();
 });
 
-gulp.task('server', () => {
+gulp.task('server', (done) => {
 	if (node) node.kill();
 	node = spawn('node', ['server.js'], {stdio: 'inherit'});
 	node.on('close', (code) => {
@@ -57,14 +61,17 @@ gulp.task('server', () => {
 			gulp.log('Error detected, waiting for changes...');
 		}
 	});
+	done();
 });
 
-gulp.task('tsc', () => {
-	if (node) tsc.kill();
+gulp.task('tsc', (done) => {
+	if (tsc) tsc.kill();
 	tsc = spawn('tsc', [], {stdio: 'inherit'});
 	tsc.on('close', (code) => {
 		if (code === 8) {
 			gulp.log('Error detected, waiting for changes...');
+		} else {
+			done();
 		}
 	});
 });
@@ -91,7 +98,6 @@ gulp.task('client-unit-test', (done) => {
 			throw new Error('=====\nKarma > Tests Failed\n=====\n', results);
 		}
 		console.log('=====\nKarma > Complete With No Failures\n=====\n', results);
-
 		done();
 	});
 
@@ -114,7 +120,6 @@ gulp.task('client-unit-test-single-run', (done) => {
 			throw new Error('=====\nKarma > Tests Failed\n=====\n', results);
 		}
 		console.log('=====\nKarma > Complete With No Failures\n=====\n', results);
-
 		done();
 	});
 
@@ -164,6 +169,7 @@ gulp.task('pack-vendor-js', () => {
 gulp.task('pack-vendor-css', () => {
 	return gulp.src([
 		'./node_modules/bootstrap/dist/css/bootstrap.css',
+		'./node_modules/bootstrap/dist/css/bootstrap-theme.css',
 		'./node_modules/nvd3/build/nv.d3.css',
 		'./node_modules/components-font-awesome/css/font-awesome.css'
 	])

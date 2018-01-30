@@ -4,7 +4,6 @@ import { ServerStaticDataService } from '../services/server-static-data.service'
 import { PublicDataService } from '../services/public-data.service';
 
 declare let d3: any;
-declare let $: JQueryStatic;
 
 @Component({
 	selector: 'dashboard-intro',

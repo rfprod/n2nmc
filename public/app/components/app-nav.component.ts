@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../services/event-emitter.service';
 
-declare var $: JQueryStatic;
-
 @Component({
 	selector: 'app-nav',
 	templateUrl: '/public/app/views/dashboard-nav.html',

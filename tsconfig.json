@@ -9,7 +9,10 @@
 		"lib": ["es2015", "dom"],
 		"removeComments": false,
 		"noImplicitAny": false,
-		"suppressImplicitAnyIndexErrors": true
+		"suppressImplicitAnyIndexErrors": true,
+		"typeRoots": ["./node_modules/@types"],
+		"types": ["node", "jasmine", "jquery"],
+		"allowSyntheticDefaultImports": true
 	},
 	"angularCompilerOptions": {
 		"fullTemplateTypeCheck": true,
@@ -23,7 +26,6 @@
 		".git",
 		"app",
 		"node_modules",
-		"public/bower_components",
 		"public/css",
 		"public/img",
 		"public/js",

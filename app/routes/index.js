@@ -2,7 +2,7 @@
 
 const path = process.cwd();
 
-module.exports = function(app, passport, User, SrvInfo, DataInit) { // eslint-disable-line no-unused-vars
+module.exports = function(app, passport, User, SrvInfo, DataInit, mailTransporter) { // eslint-disable-line no-unused-vars
 
 /*
 *	check if data init is needed
@@ -10,6 +10,24 @@ module.exports = function(app, passport, User, SrvInfo, DataInit) { // eslint-di
 */
 
 	DataInit.initData();
+
+	/*
+	*	email sender example
+	*/
+	let mailOptions = {};
+	function sendEmail(recipientEmail) {
+		mailOptions = {
+			from: '"NG2NMC 👥" <'+process.env.MAILER_EMAIL+'>', // sender address
+			to: recipientEmail, //'bar@blurdybloop.com, baz@blurdybloop.com', // accepts list of receivers
+			subject: 'Subject: some text ✔', // Subject line
+			text: 'NG2NMC: sample message to recipient email: '+recipientEmail+'.', // plaintext body
+			html: '<h3>NG2NMC</h3><p>Sample message to recipient email: '+recipientEmail+'..</p>' // html body
+		};
+		mailTransporter.sendMail(mailOptions, function(err, info) {
+			if(err) {return console.log(err);}
+			console.log('Message sent: ' + info.response);
+		});
+	}
 
 	// eslint-disable-next-line
 /*

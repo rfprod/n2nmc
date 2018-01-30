@@ -7,6 +7,7 @@ module.exports = function(config){
 			'node_modules/jquery/dist/jquery.js',
 			'node_modules/d3/d3.js',
 			'node_modules/nvd3/build/nv.d3.js',
+			{ pattern: 'node_modules/ng2-nvd3/build/**', included: false, watched: false },
 
 			'node_modules/core-js/client/shim.js',
 			'node_modules/reflect-metadata/Reflect.js',
@@ -27,8 +28,9 @@ module.exports = function(config){
 			{ pattern: 'node_modules/traceur/bin/traceur.js', included: false, watched: false },
 			
 			{ pattern: 'node_modules/@angular/**', included: false, watched: false },
-			
 			{ pattern: 'node_modules/rxjs/**', included: false, watched: false },
+			{ pattern: 'node_modules/tslib/**', included: false, watched: false },
+			{ pattern: 'node_modules/traceur/**', included: false, watched: false },
 
 			'test/karma.test-shim.js',
 			{ pattern: 'test/client/*.js', included: false, watched: false },

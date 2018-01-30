@@ -5,8 +5,6 @@ import { UserService } from '../services/user.service';
 import { ServerStaticDataService } from '../services/server-static-data.service';
 import { PublicDataService } from '../services/public-data.service';
 
-declare let $: JQueryStatic;
-
 @Component({
 	selector: 'dashboard-login',
 	templateUrl: '/public/app/views/dashboard-login.html',

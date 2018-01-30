@@ -10,7 +10,10 @@
 	var map = {
 		'app': 																	'./base/public/app',
 		'ng2-nvd3': 														'npm:ng2-nvd3/build',
+		'rxjs/Rx': 															'npm:rxjs/bundles/Rx.js',
 		'rxjs': 																'npm:rxjs',
+		'rxjs/operators': 											'npm:rxjs/operators',
+		'tslib': 																'npm:tslib/tslib.js',
 		'traceur': 															'npm:traceur/bin',
 		'@angular/animations': 									'npm:@angular/animations/bundles/animations.umd.js',
 		'@angular/animations/browser': 					'npm:@angular/animations/bundles/animations-browser.umd.js',
@@ -28,7 +31,8 @@
 	var packages = {
 		'app': 												{ main: 'app', defaultExtension: 'js' },
 		'ng2-nvd3': 									{ main: 'index', defaultExtension: 'js' },
-		'rxjs': 											{ main: 'Rx', defaultExtension: 'js' },
+		'rxjs': 											{ defaultExtension: 'js' },
+		'rxjs/operators': 						{ main: '../operators', defaultExtension: 'js' },
 		'traceur': 										{ main: 'traceur', defaultExtension: 'js' }
 	};
 

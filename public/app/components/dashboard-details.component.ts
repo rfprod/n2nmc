@@ -2,8 +2,6 @@ import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../services/event-emitter.service';
 import { UsersListService } from '../services/users-list.service';
 
-declare var $: JQueryStatic;
-
 @Component({
 	selector: 'dashboard-details',
 	templateUrl: '/public/app/views/dashboard-details.html',

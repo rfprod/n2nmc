@@ -41,34 +41,30 @@ In order to run your own copy of N2NMC, you must have the following installed:
 To install N2NMC execute the below command in the terminal window while in your projects folder:
 
 ```
-git clone https://github.com/rfprod/n2nmc.git
+git clone https://github.com/rfprod/ng2nmc.git
 ```
 
-This will install the N2NMC components into the `n2nmc` directory in your projects folder.
+This will install the N2NMC components into the `ng2nmc` directory in your projects folder.
 
 ### Local Environment Variables
 
 Create a file named `.env` in the root directory. This file should contain:
 
 ```
-MONGO_URI=mongodb://localhost:27017/n2nmc
+MONGO_FILE_PATH=/path/to/mongo/data/directory
+MONGO_URI=mongodb://localhost:27017/ng2nmc
 PORT=8080
 APP_URL=http://localhost:8080/
+MAILER_HOST=smtp.gmail.com
+MAILER_PORT=465
+MAILER_EMAIL=dummy-sender-email@gmail.com
+MAILER_CLIENT_ID=dummy-client-id.apps.googleusercontent.com
+MAILER_CLIENT_SECRET=dummy-client-secret
+MAILER_REFRESH_TOKEN=dummy-refresh-token
+MAILER_RECIPIENT_EMAIL=dummy-recipient-email@gmail.com
 ```
 
-#### Openshift deployment requires env variables setup via rhc
-
-for example
-
-`rhc env set -a n2nm -e APP_URL=https://n2nmc-ecapseman.rhcloud.com/`
-
-required vars
-
-```
-APP_URL=application-url
-MONGO_USR=database-user-name
-MONGO_PASS=database-user-password
-```
+If `MONGO_FILE_PATH` is not set, database will be created in `~/mongo/`
 
 ### Starting the App
 
@@ -131,12 +127,6 @@ To lint the code execute the following command in the terminal window while in y
 ```
 $ npm run lint
 ```
-
-### The OpenShift cartridges documentation
-
-* [`cartridge guide`](https://github.com/openshift/origin-server/blob/master/documentation/oo_cartridge_guide.adoc#openshift-origin-cartridge-guide)
-* [`cartridge guide: mongodb`](https://github.com/openshift/origin-server/blob/master/documentation/oo_cartridge_guide.adoc#9-mongodb)
-* [`cartridge guide: nodejs`](https://github.com/openshift/origin-server/blob/master/documentation/oo_cartridge_guide.adoc#11-nodejs)
 
 ## Licenses
 
