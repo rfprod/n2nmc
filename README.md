@@ -1,5 +1,7 @@
 # Ng2NodeMongoCore (N2NMC)
 
+![build](https://travis-ci.org/rfprod/ng2nmc.svg?branch=master)
+
 ## Overview
 
 Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular.
