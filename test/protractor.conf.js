@@ -28,7 +28,7 @@ exports.config = {
 
 	chromeOnly: false,
 
-	directConnect: false,
+	directConnect: true,
 
 	baseUrl: 'http://localhost:8080/',
 
