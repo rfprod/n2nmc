@@ -45,11 +45,11 @@ export class AppNavComponent implements OnInit, OnDestroy {
 		*	on click on an anchor object if a resource is loaded in the same tab
 		*/
 		console.log('close websocket event emitted');
-		this.emitter.emitEvent({sys: 'close websocket'});
+		this.emitter.emitEvent({ websocket: 'close' });
 	}
 
 	public selectLanguage(key: string) {
-		this.emitter.emitEvent({lang: key});
+		this.emitter.emitEvent({ lang: key });
 	}
 
 	public ngOnInit() {

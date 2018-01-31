@@ -61,10 +61,10 @@ export class AppComponent implements OnInit, OnDestroy {
 		// listen event emitter control messages
 		this.subscriptions.eventEmitter = this.emitter.getEmitter().subscribe((message) => {
 			console.log('app consuming event:', message);
-			if (message.sys === 'start spinner') { // spinner control message
+			if (message.spinner === 'start') { // spinner control message
 				console.log('starting spinner');
 				this.startSpinner();
-			} else if (message.sys === 'stop spinner') { // spinner control message
+			} else if (message.spinner === 'stop') { // spinner control message
 				console.log('stopping spinner');
 				this.stopSpinner();
 			} else if (message.lang) { // switch translation message

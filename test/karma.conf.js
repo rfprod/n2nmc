@@ -33,7 +33,7 @@ module.exports = function(config){
 			{ pattern: 'node_modules/traceur/**', included: false, watched: false },
 
 			'test/karma.test-shim.js',
-			{ pattern: 'test/client/*.js', included: false, watched: false },
+			{ pattern: 'test/client/**', included: false, watched: false },
 
 			{ pattern: 'public/app/**', included: false, watched: false }
 		],
@@ -66,10 +66,21 @@ module.exports = function(config){
 		// browsers : ['Firefox'],
 		
 		plugins : [
-		    'karma-chrome-launcher',
-		//    'karma-firefox-launcher',
+			'karma-redirect-preprocessor',
+			'karma-chrome-launcher',
+//    'karma-firefox-launcher',
 			'karma-jasmine'
 		],
+
+		preprocessors: {
+			'public/**/*.html': ['redirect']
+		},
+
+		redirectPreprocessor: {
+			// stripPrefix: '',
+			// stripSuffix: '',
+			// prependPrefix: ''
+		},
 
 		// reporters: [],
 

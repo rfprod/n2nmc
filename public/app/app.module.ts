@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,9 +28,9 @@ import { NvD3Component } from 'ng2-nvd3';
 declare let $: JQueryStatic;
 
 @NgModule({
-	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, /*nvD3*/ NvD3Component ],
+	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, NvD3Component ],
 	imports 		: [ BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, RouterModule.forRoot(APP_ROUTES) ],
-	providers 	: [ {provide: LocationStrategy, useClass: PathLocationStrategy}, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
+	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy}, { provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],
 	bootstrap 	: [ AppComponent ],
 })

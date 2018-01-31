@@ -3,6 +3,10 @@ import { EventEmitterService } from '../services/event-emitter.service';
 import { ServerStaticDataService } from '../services/server-static-data.service';
 import { PublicDataService } from '../services/public-data.service';
 
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/first';
+
 declare let d3: any;
 
 @Component({
@@ -11,18 +15,16 @@ declare let d3: any;
 })
 export class DashboardIntroComponent implements OnInit, OnDestroy {
 	constructor(
-		public el: ElementRef,
+		private el: ElementRef,
 		private emitter: EventEmitterService,
 		private serverStaticDataService: ServerStaticDataService,
 		private publicDataService: PublicDataService
 	) {
 		console.log('this.el.nativeElement:', this.el.nativeElement);
 	}
-	private subscription: any;
+	private ngUnsubscribe: Subject<void> = new Subject();
 	public title: string = 'Ng2NodeMongoCore (N2NMC)';
 	public description: string = 'Angular, NodeJS, MongoDB';
-	public host: string = window.location.host;
-	public wsUrl: string = (this.host.indexOf('localhost') !== -1) ? 'ws://' + this.host + '/api/app-diag/dynamic' : 'ws://' + this.host + ':8000/api/app-diag/dynamic';
 	public chartOptions: object = {
 		chart: {
 			type: 'pieChart',
@@ -31,11 +33,13 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 			x: (d) => d.key,
 			y: (d) => d.y,
 			showLabels: true,
+			labelSunbeamLayout: false,
 			pie: {
 				startAngle: (d) => d.startAngle / 2 - Math.PI / 2,
 				endAngle: (d) => d.endAngle / 2 - Math.PI / 2,
 			},
 			duration: 1000,
+			title: 'accounts',
 			legend: {
 				margin: {
 					top: 5,
@@ -72,10 +76,12 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 		static: [],
 		dynamic: [],
 	};
-	public ws = new WebSocket(this.wsUrl);
+	private host: string = window.location.host;
+	private wsUrl: string = (this.host.indexOf('localhost') !== -1) ? 'ws://' + this.host + '/api/app-diag/dynamic' : 'ws://' + this.host + ':8000/api/app-diag/dynamic';
+	private ws = new WebSocket(this.wsUrl);
 	public errorMessage: string;
 	private getServerStaticData(callback) {
-		this.serverStaticDataService.getData().subscribe(
+		this.serverStaticDataService.getData().first().subscribe(
 			(data) => this.serverData.static = data,
 			(error) => this.errorMessage = error as any,
 			() => {
@@ -85,7 +91,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 		);
 	}
 	private getPublicData(callback) {
-		this.publicDataService.getData().subscribe(
+		this.publicDataService.getData().first().subscribe(
 			(data) => {
 				this.nvd3.clearElement();
 				this.appUsageData = data;
@@ -100,22 +106,22 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 
 	private emitSpinnerStartEvent() {
 		console.log('root spinner start event emitted');
-		this.emitter.emitEvent({sys: 'start spinner'});
+		this.emitter.emitEvent({spinner: 'start'});
 	}
 	private emitSpinnerStopEvent() {
 		console.log('root spinner stop event emitted');
-		this.emitter.emitEvent({sys: 'stop spinner'});
+		this.emitter.emitEvent({spinner: 'stop'});
 	}
 
-	private showModal: boolean = false;
-	private toggleModal() {
+	public showModal: boolean = false;
+	public toggleModal() {
 		if (this.showModal) {
 			this.ws.send(JSON.stringify({action: 'pause'}));
 		} else { this.ws.send(JSON.stringify({action: 'get'})); }
 		this.showModal = (!this.showModal) ? true : false;
 	}
 
-	@ViewChild('chart') private nvd3: any;
+	@ViewChild('chart') public nvd3: any;
 
 	public ngOnInit() {
 		console.log('ngOnInit: DashboardIntroComponent initialized');
@@ -149,11 +155,10 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 			console.log('websocket closed:', evt);
 		};
 
-		this.subscription = this.emitter.getEmitter().subscribe((message) => {
+		this.emitter.getEmitter().takeUntil(this.ngUnsubscribe).subscribe((message: any) => {
 			console.log('/intro consuming event:', message);
-			if (message.sys === 'close websocket') {
+			if (message.websocket === 'close') {
 				console.log('closing webcosket');
-				this.subscription.unsubscribe();
 				this.ws.close();
 			}
 		});
@@ -167,7 +172,8 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 	}
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: DashboardIntroComponent destroyed');
-		this.subscription.unsubscribe();
+		this.ngUnsubscribe.next();
+		this.ngUnsubscribe.complete();
 		this.ws.close();
 	}
 }

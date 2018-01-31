@@ -48,11 +48,11 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 
 	private emitSpinnerStartEvent() {
 		console.log('root spinner start event emitted');
-		this.emitter.emitEvent({sys: 'start spinner'});
+		this.emitter.emitEvent({spinner: 'start'});
 	}
 	private emitSpinnerStopEvent() {
 		console.log('root spinner stop event emitted');
-		this.emitter.emitEvent({sys: 'stop spinner'});
+		this.emitter.emitEvent({spinner: 'stop'});
 	}
 
 	public ngOnInit() {
