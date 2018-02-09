@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	public supportedLanguages: any[];
 
-	constructor( public el: ElementRef, private emitter: EventEmitterService, private _translate: TranslateService, private router: Router ) {
+	constructor( public el: ElementRef, private emitter: EventEmitterService, private translate: TranslateService, private router: Router ) {
 		console.log('this.el.nativeElement', this.el.nativeElement);
 	}
 
@@ -44,12 +44,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	private isCurrentLanguage(key: string) {
 		// check if selected one is a current language
-		return key === this._translate.currentLanguage;
+		return key === this.translate.currentLanguage;
 	}
 	public selectLanguage(key: string) {
 		// set current language
 		if (!this.isCurrentLanguage(key)) {
-			this._translate.use(key);
+			this.translate.use(key);
 		}
 	}
 
