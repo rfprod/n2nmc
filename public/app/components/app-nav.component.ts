@@ -1,13 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventEmitterService } from '../services/event-emitter.service';
+import { TranslateService } from '../translate/index';
 
 @Component({
 	selector: 'app-nav',
-	templateUrl: '/public/app/views/dashboard-nav.html',
+	templateUrl: '/public/app/views/app-nav.html',
 })
 export class AppNavComponent implements OnInit, OnDestroy {
 
-	constructor( private emitter: EventEmitterService ) {}
+	constructor(
+		private emitter: EventEmitterService,
+		private translate: TranslateService
+	) {}
 
 	private subscription: any;
 	public navButtonsState: boolean[] = [false, false, false, false];
@@ -50,6 +54,9 @@ export class AppNavComponent implements OnInit, OnDestroy {
 
 	public selectLanguage(key: string) {
 		this.emitter.emitEvent({ lang: key });
+	}
+	public isLanguageSelected(key: string): boolean {
+		return key === this.translate.currentLanguage;
 	}
 
 	public ngOnInit() {

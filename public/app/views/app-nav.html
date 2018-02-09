@@ -12,6 +12,6 @@
 		<i class="fa fa-database"></i> {{ 'data' | translate }}
 	</a>
 	<span class="btn-group">
-		<a *ngFor="let lang of supportedLanguages" class="btn btn-default btn-sm" (click)="selectLanguage(lang.key)">{{lang.name}}</a>
+		<a *ngFor="let lang of supportedLanguages" class="btn btn-default btn-sm" [ngClass]="{selected: isLanguageSelected(lang.key)}" (click)="selectLanguage(lang.key)">{{lang.name}}</a>
 	</span>
 </div>
