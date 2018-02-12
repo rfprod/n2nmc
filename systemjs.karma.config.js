@@ -9,6 +9,7 @@
 	// packages locations
 	var map = {
 		'app': 																	'./base/public/app',
+		'mocks': 																'./base/test/client/mocks',
 		'ng2-nvd3': 														'npm:ng2-nvd3/build',
 		'rxjs/Rx': 															'npm:rxjs/bundles/Rx.js',
 		'rxjs': 																'npm:rxjs',
@@ -30,6 +31,7 @@
 	// how to load packages
 	var packages = {
 		'app': 												{ main: 'app', defaultExtension: 'js' },
+		'mocks': 											{ main: 'index', defaultExtension: 'js' },
 		'ng2-nvd3': 									{ main: 'index', defaultExtension: 'js' },
 		'rxjs': 											{ defaultExtension: 'js' },
 		'rxjs/operators': 						{ main: '../operators', defaultExtension: 'js' },

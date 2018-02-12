@@ -9,17 +9,17 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { NvD3Component } from 'ng2-nvd3';
 
-import { EventEmitterService } from '../../public/app/services/event-emitter.service';
+import { EventEmitterService } from '../../../public/app/services/event-emitter.service';
 
-import { TranslateService, TranslatePipe, TRANSLATION_PROVIDERS } from '../../public/app/translate/index';
+import { TranslateService, TranslatePipe, TRANSLATION_PROVIDERS } from '../../../public/app/translate/index';
 
-import { ServerStaticDataService } from '../../public/app/services/server-static-data.service';
-import { PublicDataService } from '../../public/app/services/public-data.service';
+import { ServerStaticDataService } from '../../../public/app/services/server-static-data.service';
+import { PublicDataService } from '../../../public/app/services/public-data.service';
 
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-import { DashboardIntroComponent } from '../../public/app/components/dashboard-intro.component';
+import { DashboardIntroComponent } from '../../../public/app/components/dashboard-intro.component';
 
 describe('DashboardIntroComponent', () => {
 

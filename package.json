@@ -103,7 +103,7 @@
 	},
 	"scripts": {
 		"postinstall": "echo 'postinstall empty'",
-		"prestart": "npm install",
+		"prestart": "npm install && npm run clear-ts-build",
 		"start": "bash npm-start.sh",
 		"development-start": "tsc && concurrently \"gulp\" \"npm run tsc:w\"",
 		"production-start": "gulp production-start",
@@ -111,6 +111,7 @@
 		"test": "echo 'WARNING: npm test is not configured yet\nUse one of these depending on what do you want to test:\nnpm run client-test\nnpm run client-test-single-run\nnpm run server-test' && exit 1",
 		"client-test": "gulp watch-client-and-test",
 		"client-test-single-run": "gulp client-unit-test-single-run",
+		"clear-ts-build": "find ./public/app/ ./test/client/ -type f -name '*.js' -delete && find ./public/app/ ./test/client/ -type f -name '*.js.map' -delete",
 		"server-test": "gulp server-test",
 		"lint": "gulp watch-and-lint",
 		"lint-single-run": "gulp lint",
