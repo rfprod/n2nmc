@@ -2,7 +2,7 @@
 
 const path = process.cwd();
 
-module.exports = function(app, passport, User, SrvInfo, DataInit, mailTransporter) { // eslint-disable-line no-unused-vars
+module.exports = function(app, cwd, passport, User, SrvInfo, DataInit, mailTransporter) { // eslint-disable-line no-unused-vars
 
 /*
 *	check if data init is needed
@@ -36,6 +36,15 @@ module.exports = function(app, passport, User, SrvInfo, DataInit, mailTransporte
 
 	app.get('/', (req, res) => {
 		res.sendFile(path + '/public/index.html');
+	});
+
+	app.get('/service-worker.js', (req, res) => {
+		res.sendFile(cwd + '/public/service-worker.js');
+	});
+
+	app.get('/api/app-diag/hashsum', (req, res) => {
+		console.log('process.env.BUILD_HASH', process.env.BUILD_HASH);
+		res.json({ hashsum: process.env.BUILD_HASH || 'NA' });
 	});
 
 	app.get('/api/dummy', (req, res) => {

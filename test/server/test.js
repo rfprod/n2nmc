@@ -34,6 +34,24 @@ describe('/ endpoint', function() {
 	});
 });
 
+describe('/api/app-diag/hashsum endpoint', function() {
+	it('should deliver app hashsum', function(done) {
+		request(baseUrl+'/api/app-diag/hashsum', function(error, response, body) {
+
+			expect(error).to.be.not.ok;
+			expect(response).to.be.not.a('undefined');
+			expect(response.statusCode).to.be.equal(200);
+
+			const responseData = JSON.parse(response.body);
+
+			assert.isObject(responseData);
+			assert.isString(responseData.hashsum);
+
+			done();
+		});
+	});
+});
+
 describe('/api/app-diag/static endpoint', function() {
 	it('should deliver static diagnostic information about the app platform', function (done){
 		request(baseUrl+'/api/app-diag/static', function (error,response,body) {

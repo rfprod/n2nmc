@@ -17,6 +17,9 @@ import { AppInfoComponent } from './components/app-info.component';
 import { DashboardIntroComponent } from './components/dashboard-intro.component';
 import { DashboardLoginComponent } from './components/dashboard-login.component';
 import { DashboardDetailsComponent } from './components/dashboard-details.component';
+
+import { CustomServiceWorkerService } from './services/custom-service-worker.service';
+import { CustomDeferredService } from './services/custom-deferred.service';
 import { EventEmitterService } from './services/event-emitter.service';
 import { UsersListService } from './services/users-list.service';
 import { UserService } from './services/user.service';
@@ -30,7 +33,7 @@ declare let $: JQueryStatic;
 @NgModule({
 	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, NvD3Component ],
 	imports 		: [ BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, RouterModule.forRoot(APP_ROUTES) ],
-	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy}, { provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
+	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy}, { provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService, CustomServiceWorkerService, CustomDeferredService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],
 	bootstrap 	: [ AppComponent ],
 })

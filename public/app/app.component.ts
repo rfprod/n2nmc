@@ -1,8 +1,12 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventEmitterService } from './services/event-emitter.service';
 import { TranslateService } from './translate/index';
+import { CustomServiceWorkerService } from './services/custom-service-worker.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
 
 declare let $: JQueryStatic;
 
@@ -12,7 +16,9 @@ declare let $: JQueryStatic;
 		<app-nav></app-nav>
 		<router-outlet></router-outlet>
 		<app-info></app-info>
-		<span id="spinner" *ngIf="showSpinner"><img src="../public/img/gears.svg"/></span>
+		<span id="spinner" *ngIf="showSpinner">
+			<img src="../public/img/gears.svg"/>
+		</span>
 	`,
 	animations: [
 		trigger('empty', [])
@@ -20,29 +26,39 @@ declare let $: JQueryStatic;
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-	private subscriptions: any = {
-		eventEmitter: undefined,
-		router: undefined
-	};
-	private showSpinner: boolean = false;
-
-	public supportedLanguages: any[];
-
-	constructor( public el: ElementRef, private emitter: EventEmitterService, private translate: TranslateService, private router: Router ) {
+	constructor(
+		private el: ElementRef,
+		private emitter: EventEmitterService,
+		private translate: TranslateService,
+		private router: Router,
+		private serviceWorker: CustomServiceWorkerService,
+		@Inject('Window') private window: Window
+	) {
 		console.log('this.el.nativeElement', this.el.nativeElement);
 	}
 
-	// spinner controls
-	public startSpinner() {
+	private ngUnsubscribe: Subject<void> = new Subject();
+
+	public showSpinner: boolean = false;
+
+/*
+*	spinner controls
+*/
+	private startSpinner() {
 		console.log('spinner start');
 		this.showSpinner = true;
 	}
-	public stopSpinner() {
+	private stopSpinner() {
 		console.log('spinner stop');
 		this.showSpinner = false;
 	}
 
-	private isCurrentLanguage(key: string) {
+	public supportedLanguages: any[] = [
+		{ key: 'en', name: 'English' },
+		{ key: 'ru', name: 'Russian' }
+	];
+
+	public isCurrentLanguage(key: string) {
 		// check if selected one is a current language
 		return key === this.translate.currentLanguage;
 	}
@@ -58,8 +74,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
 		$('#init').remove(); // remove initialization text
 
-		// listen event emitter control messages
-		this.subscriptions.eventEmitter = this.emitter.getEmitter().subscribe((message) => {
+		// event emitter control messages
+		this.emitter.getEmitter().takeUntil(this.ngUnsubscribe).subscribe((message: any) => {
 			console.log('app consuming event:', message);
 			if (message.spinner === 'start') { // spinner control message
 				console.log('starting spinner');
@@ -78,24 +94,27 @@ export class AppComponent implements OnInit, OnDestroy {
 			}
 		});
 
-		// init supported languages
-		this.supportedLanguages = [
-			{ key: 'en', name: 'English' },
-			{ key: 'ru', name: 'Russian' }
-		];
-
+		/*
+		* check preferred language, respect preference if dictionary exists
+		*	for now there are only dictionaries only: English, Russian
+		*	set Russian if it is preferred, else use English
+		*/
+		const nav: any = this.window.navigator;
+		const userPreference: string = (nav.language === 'ru-RU' || nav.language === 'ru' || nav.languages[0] === 'ru') ? 'ru' : 'en';
 		// set default language
-		this.selectLanguage('en');
+		this.selectLanguage(userPreference);
 
-		this.subscriptions.router = this.router.events.subscribe((event) => {
+		// router events
+		this.router.events.takeUntil(this.ngUnsubscribe).subscribe((event) => {
 			console.log(' > ROUTER EVENT:', event);
 		});
 	}
 
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: AppComponent destroyed');
-		this.subscriptions.eventEmitter.unsubscribe();
-		this.subscriptions.router.unsubscribe();
+		this.serviceWorker.disableServiceWorker();
+		this.ngUnsubscribe.next();
+		this.ngUnsubscribe.complete();
 	}
 
 }

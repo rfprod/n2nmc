@@ -26,7 +26,7 @@ const User = require('./app/models/users.js'),
 
 process.title = 'ng2nmc';
 
-const cwd = process.cwd();
+const cwd = __dirname;
 
 app.use('/public', express.static(cwd + '/public'));
 app.use((req, res, next) => {
@@ -115,7 +115,7 @@ mailTransporter.verify((err, success) => {
 	}
 });
 
-routes(app, passport, User, SrvInfo, DataInit, mailTransporter);
+routes(app, cwd, passport, User, SrvInfo, DataInit, mailTransporter);
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 	ip = process.env.OPENSHIFT_NODEJS_IP; // "127.0.0.1" is not specified here on purpose, this env var should be included in .openshift.env
