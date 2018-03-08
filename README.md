@@ -132,4 +132,4 @@ $ npm run lint
 
 ## Licenses
 
-* [`Ng2NMC`](LICENSE.md)
+* [`Ng2NMC`](LICENSE)
