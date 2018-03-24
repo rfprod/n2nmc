@@ -37,6 +37,7 @@ In order to run your own copy of Ng2NMC, you must have the following installed:
 - [`NPM`](https://nodejs.org/)
 - [`MongoDB`](http://www.mongodb.org/)
 - [`Git`](https://git-scm.com/)
+- [`Heroku CLI`](https://devcenter.heroku.com/articles/heroku-cli)
 
 ### Installation & Startup
 
@@ -129,6 +130,19 @@ To lint the code execute the following command in the terminal window while in y
 ```
 $ npm run lint
 ```
+
+### Heroku Deployment
+
+*TODO*
+
+#### Heroku deployment: START
+
+*TODO*
+
+## Heroku Documentation
+
+* [`Heroku Devcenter: Gerring started with nodejs`](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
+* [`Heroku Elements: Addons: Mongolab`](https://elements.heroku.com/addons/mongolab)
 
 ## Licenses
 
