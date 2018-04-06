@@ -89,7 +89,7 @@ gulp.task('database', (done) => {
 	mongo = spawn('npm', ['run','mongo-start'], {stdio: 'inherit'});
 	mongo.on('close', (code) => {
 		if (code === 8) {
-			gulp.log('Error detected, waiting for changes...');
+			console.log('Error detected, waiting for changes...');
 		}
 	});
 	done();
@@ -100,7 +100,7 @@ gulp.task('server', (done) => {
 	node = spawn('node', ['server.js'], {stdio: 'inherit'});
 	node.on('close', (code) => {
 		if (code === 8) {
-			gulp.log('Error detected, waiting for changes...');
+			console.log('Error detected, waiting for changes...');
 		}
 	});
 	done();
@@ -111,7 +111,7 @@ gulp.task('tsc', (done) => {
 	tsc = spawn('tsc', [], {stdio: 'inherit'});
 	tsc.on('close', (code) => {
 		if (code === 8) {
-			gulp.log('Error detected, waiting for changes...');
+			console.log('Error detected, waiting for changes...');
 		} else {
 			done();
 		}
@@ -282,12 +282,26 @@ gulp.task('watch-client-and-test', () => {
 	gulp.watch(['./public/app/*.js','./test/client/*.js','./test/karma.conf.js','./test/karma.test-shim.js'], ['client-unit-test']); //watch unit test changes and run tests
 });
 
-gulp.task('compile-and-build', (done) => {
-	runSequence('tsc', 'build-system-js', 'pack-vendor-js', 'pack-vendor-css', 'move-vendor-fonts', 'sass-autoprefix-minify-css', 'hashsum', 'set-build-hash', done);
-});
-
 gulp.task('build', (done) => {
 	runSequence('build-system-js', 'pack-vendor-js', 'pack-vendor-css', 'move-vendor-fonts', 'sass-autoprefix-minify-css', 'hashsum', 'set-build-hash', done);
+});
+
+gulp.task('compile-and-build', (done) => {
+	runSequence('tsc', 'build', done);
+});
+
+gulp.task('rebuild-app', (done) => { // should be used in watcher to rebuild the app on *.ts file changes
+	runSequence('tslint', 'compile-and-build', done);
+});
+
+let rebuildApp;
+gulp.task('spawn-rebuild-app', (done) => {
+	if (rebuildApp) rebuildApp.kill();
+	rebuildApp = spawn('gulp', ['rebuild-app'], {stdio: 'inherit'});
+	rebuildApp.on('close', (code) => {
+		console.log(`rebuildApp closed with code ${code}`);
+	});
+	done();
 });
 
 gulp.task('lint', (done) => {
@@ -295,18 +309,10 @@ gulp.task('lint', (done) => {
 });
 
 gulp.task('default', (done) => {
-	runSequence('lint', 'build', 'database', 'server', 'watch', done);
+	runSequence('lint', 'compile-and-build', 'database', 'server', 'watch', done);
 });
 
-gulp.task('production-start', (done) => {
-	runSequence('build', 'database', 'server', done);
-});
-
-process.on('exit', () => {
-	if (node) node.kill();
-	if (mongo) mongo.kill();
-});
-
-process.on('SIGINT', () => {
-	killProcessByName('gulp');
+process.on('exit', (code) => {
+	console.log(`PROCESS EXIT CODE ${code}`);
+	// killProcessByName('gulp');
 });

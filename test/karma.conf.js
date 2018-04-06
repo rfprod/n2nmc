@@ -42,8 +42,6 @@ module.exports = function(config){
 
 		frameworks: ['jasmine'],
 
-		// preprocessors: {},
-
 		browserNoActivityTimeout: 20000,
 		customLaunchers: {
 			/*
@@ -62,13 +60,10 @@ module.exports = function(config){
 			}
 		},
 		browsers: ['ChromeHeadless'],
-		// browsers: ['Chrome'],
-		// browsers : ['Firefox'],
 		
 		plugins : [
 			'karma-redirect-preprocessor',
 			'karma-chrome-launcher',
-//    'karma-firefox-launcher',
 			'karma-jasmine'
 		],
 

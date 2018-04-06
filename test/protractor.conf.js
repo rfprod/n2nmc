@@ -15,11 +15,6 @@ exports.config = {
 	],
 
 	capabilities: {
-		/*
-		*	headless chrome testing
-		*	removed PhantomJS from here completely because of errors for unknown reasons
-		*	which comsume way too much time to deal with
-		*/
 		browserName: 'chrome',
 		chromeOptions: {
 			args: [ '--headless', '--disable-gpu', '--window-size=1024x768' ]
