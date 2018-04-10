@@ -37,6 +37,7 @@
 		"@types/core-js": "^0.9.46",
 		"@types/jasmine": "^2.8.6",
 		"@types/jquery": "^3.3.1",
+		"@types/node": "^9.6.2",
 		"bootstrap": "^3.3.7",
 		"components-font-awesome": "^4.6.3",
 		"connect-mongodb-session": "^2.0.1",
