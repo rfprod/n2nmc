@@ -5,9 +5,6 @@ import { TranslateService } from './translate/index';
 import { CustomServiceWorkerService } from './services/custom-service-worker.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-
 declare let $: JQueryStatic;
 
 @Component({
@@ -37,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		console.log('this.el.nativeElement', this.el.nativeElement);
 	}
 
-	private ngUnsubscribe: Subject<void> = new Subject();
+	private subscriptions: any[] = [];
 
 	public showSpinner: boolean = false;
 
@@ -75,7 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		$('#init').remove(); // remove initialization text
 
 		// event emitter control messages
-		this.emitter.getEmitter().takeUntil(this.ngUnsubscribe).subscribe((message: any) => {
+		let sub = this.emitter.getEmitter().subscribe((message: any) => {
 			console.log('app consuming event:', message);
 			if (message.spinner === 'start') { // spinner control message
 				console.log('starting spinner');
@@ -93,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
 				}
 			}
 		});
+		this.subscriptions.push(sub);
 
 		/*
 		* check preferred language, respect preference if dictionary exists
@@ -105,16 +103,18 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.selectLanguage(userPreference);
 
 		// router events
-		this.router.events.takeUntil(this.ngUnsubscribe).subscribe((event) => {
+		sub = this.router.events.subscribe((event) => {
 			console.log(' > ROUTER EVENT:', event);
 		});
+		this.subscriptions.push(sub);
 	}
 
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: AppComponent destroyed');
 		this.serviceWorker.disableServiceWorker();
-		this.ngUnsubscribe.next();
-		this.ngUnsubscribe.complete();
+		for (const sub of this.subscriptions) {
+			sub.unsubscribe();
+		}
 	}
 
 }

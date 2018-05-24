@@ -5,13 +5,25 @@ import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+/*
+*	Some material components rely on hammerjs
+*	CustomMaterialModule loads exact material modules
+*/
+import '../../node_modules/hammerjs/hammer.js';
+import { CustomMaterialModule } from './modules/custom-material.module';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+
+import { HttpClientModule } from '@angular/common/http';
+
 import { RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 
-import { AppComponent } from './app.component';
 import { TRANSLATION_PROVIDERS, TranslatePipe, TranslateService } from './translate/index';
+
+import { AppComponent } from './app.component';
 import { AppNavComponent } from './components/app-nav.component';
 import { AppInfoComponent } from './components/app-info.component';
 import { DashboardIntroComponent } from './components/dashboard-intro.component';
@@ -21,8 +33,9 @@ import { DashboardDetailsComponent } from './components/dashboard-details.compon
 import { CustomServiceWorkerService } from './services/custom-service-worker.service';
 import { CustomDeferredService } from './services/custom-deferred.service';
 import { EventEmitterService } from './services/event-emitter.service';
-import { UsersListService } from './services/users-list.service';
 import { UserService } from './services/user.service';
+
+import { UsersListService } from './services/users-list.service';
 import { ServerStaticDataService } from './services/server-static-data.service';
 import { PublicDataService } from './services/public-data.service';
 
@@ -32,7 +45,7 @@ declare let $: JQueryStatic;
 
 @NgModule({
 	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, NvD3Component ],
-	imports 		: [ BrowserModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule, HttpModule, RouterModule.forRoot(APP_ROUTES) ],
+	imports 		: [ BrowserModule, BrowserAnimationsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(APP_ROUTES) ],
 	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy}, { provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService, CustomServiceWorkerService, CustomDeferredService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],
 	bootstrap 	: [ AppComponent ],

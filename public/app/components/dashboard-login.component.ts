@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { EventEmitterService } from '../services/event-emitter.service';
 import { UserService } from '../services/user.service';
+
 import { ServerStaticDataService } from '../services/server-static-data.service';
 import { PublicDataService } from '../services/public-data.service';
 
@@ -10,6 +12,7 @@ import { PublicDataService } from '../services/public-data.service';
 	templateUrl: '/public/app/views/dashboard-login.html',
 })
 export class DashboardLoginComponent implements OnInit, OnDestroy {
+
 	constructor(
 		public el: ElementRef,
 		private emitter: EventEmitterService,
@@ -27,7 +30,9 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 			password: ['', Validators.compose([Validators.required, Validators.minLength(1)])]
 		});
 	}
+
 	private loginForm: FormGroup;
+
 	private resetForm() {
 		this.loginForm.reset({
 			email: null,
@@ -35,6 +40,7 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 		});
 		this.userService.ResetUser();
 	}
+
 	private submitForm() {
 		console.log('SUBMIT', this.loginForm);
 		if (this.loginForm.valid) {
@@ -44,23 +50,15 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 			this.errorMessage = 'Invalid form input';
 		}
 	}
-	public errorMessage: string;
 
-	private emitSpinnerStartEvent() {
-		console.log('root spinner start event emitted');
-		this.emitter.emitEvent({spinner: 'start'});
-	}
-	private emitSpinnerStopEvent() {
-		console.log('root spinner stop event emitted');
-		this.emitter.emitEvent({spinner: 'stop'});
-	}
+	public errorMessage: string;
 
 	public ngOnInit() {
 		console.log('ngOnInit: DashboardLoginComponent initialized');
-		this.emitSpinnerStartEvent();
+		this.emitter.emitSpinnerStartEvent();
 		this.emitter.emitEvent({route: '/login'});
 		this.emitter.emitEvent({appInfo: 'hide'});
-		this.emitSpinnerStopEvent();
+		this.emitter.emitSpinnerStopEvent();
 	}
 	public ngOnDestroy() {
 		console.log('ngOnDestroy: DashboardLoginComponent destroyed');

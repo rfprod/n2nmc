@@ -1,29 +1,29 @@
 <div id="filters">
 	<span class="flex-item">
-		<span class="input-label"><i class="fa fa-search" aria-hidden="true"></i> Search users:</span> <input [(ngModel)]="searchQuery">
+		<span class="input-label"><i class="fas fa-search" aria-hidden="true"></i> Search users:</span> <input [(ngModel)]="searchQuery">
 	</span>
 	<span class="flex-item">
-		<span class="input-label"><i class="fa fa-sort" aria-hidden="true"></i> Sort users by:</span>
+		<span class="input-label"><i class="fas fa-sort" aria-hidden="true"></i> Sort users by:</span>
 		<select [(ngModel)]="sortByCriterion">
 			<option value="role">Role</option>
 			<option value="registered">Registered</option>
 		</select>
 	</span>
 </div>
-<div id="dashboard-data" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	<legend>Users</legend>
-	<ul class="listing">
-		<li *ngFor="let user of usersList; let j = index" (mouseenter)="showDetails($event)" (mouseleave)="hideDetails($event)">
-			<h3>{{user.id}} <span id="full-name">{{user.firstName}} {{user.lastName}}</span> <span class="badge">role {{user.role}}</span></h3>
-			<span class="item">
-				<p>city: {{user.city}}<br>
-					country: {{user.country}}</p>
-				<span class="details">
-					email: {{user.email}}<br>
-					registered: {{user.registered | date}}<br>
-					last login: {{user.lastLogin | date}}
-				</span>
+<div class="container-padding" fxLayout="row wrap">
+	<legend fxFlex="100">Users</legend>
+	<span fxFlex="100" fxLayout="row wrap" *ngFor="let user of usersList; let j = index" (mouseenter)="showDetails(j)" (mouseleave)="hideDetails(j)">
+		<h3 fxFlex="100">{{user.id}} <span id="full-name">{{user.firstName}} {{user.lastName}}</span> <span class="badge">role {{user.role}}</span></h3>
+		<span fxFlex="100" fxLayout="row">
+			<span fxFlex="30">
+				city: {{user.city}}<br>
+				country: {{user.country}}
 			</span>
-		</li>
-	</ul>
+			<span fxFlex="70" *ngIf="userDetails[j]">
+				email: {{user.email}}<br>
+				registered: {{user.registered | date}}<br>
+				last login: {{user.lastLogin | date}}
+			</span>
+		</span>
+	</span>
 </div>

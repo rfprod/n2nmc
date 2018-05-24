@@ -1,5 +1,8 @@
 import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
+
 import { EventEmitterService } from '../services/event-emitter.service';
+import { CustomDeferredService } from '../services/custom-deferred.service';
+
 import { UsersListService } from '../services/users-list.service';
 
 @Component({
@@ -7,6 +10,7 @@ import { UsersListService } from '../services/users-list.service';
 	templateUrl: '/public/app/views/dashboard-details.html',
 })
 export class DashboardDetailsComponent implements OnInit, OnDestroy {
+
 	constructor(
 		public el: ElementRef,
 		private emitter: EventEmitterService,
@@ -14,30 +18,36 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 	) {
 		console.log('this.el.nativeElement:', this.el.nativeElement);
 	}
+
 	private subscription: any;
+
 	public usersList: any[] = [];
+	public userDetails: any = [];
+
 	public errorMessage: string;
-	private getUsersList(callback) {
+
+	private getUsersList(): Promise<any> {
+		const def = new CustomDeferredService<any>();
 		this.usersListService.getUsersList().subscribe(
-			(data) => this.usersList = data,
-			(error) => this.errorMessage = error as any,
-			() => {
-				console.log('getUserList done');
-				callback(this.usersList);
-			}
+			(data) => {
+				this.usersList = data;
+				this.userDetails = Array.apply(null, new Array(data.length)).map(() => false);
+				def.resolve();
+			},
+			(error) => {
+				this.errorMessage = error;
+				def.reject();
+			},
+			() => console.log('getUserList done')
 		);
+		return def.promise;
 	}
-	private showDetails(event) {
-		console.log('mouse enter');
-		const domEl = event.target.querySelector('.details');
-		console.log('domEl:', domEl);
-		domEl.style.display = 'flex';
+
+	public showDetails(index: number): void {
+		this.userDetails[index] = true;
 	}
-	private hideDetails(event) {
-		console.log('mouse leave');
-		const domEl = event.target.querySelector('.details');
-		console.log('domEl:', domEl);
-		domEl.style.display = 'none';
+	public hideDetails(index: number): void {
+		this.userDetails[index] = false;
 	}
 
 /*
@@ -70,21 +80,9 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 		this.emitter.emitEvent({sort: val});
 	}
 
-/*
-*	spinner
-*/
-	private emitSpinnerStartEvent() {
-		console.log('root spinner start event emitted');
-		this.emitter.emitEvent({spinner: 'start'});
-	}
-	private emitSpinnerStopEvent() {
-		console.log('root spinner stop event emitted');
-		this.emitter.emitEvent({spinner: 'stop'});
-	}
-
 	public ngOnInit() {
 		console.log('ngOnInit: DashboardDetailsComponent initialized');
-		this.emitSpinnerStartEvent();
+		this.emitter.emitSpinnerStartEvent();
 		this.emitter.emitEvent({route: '/data'});
 		this.emitter.emitEvent({appInfo: 'hide'});
 		this.subscription = this.emitter.getEmitter().subscribe((message) => {
@@ -119,9 +117,8 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 				}
 			}
 		});
-		this.getUsersList((userlList) => {
-			console.log('users list:', userlList);
-			this.emitSpinnerStopEvent();
+		this.getUsersList().then(() => {
+			this.emitter.emitSpinnerStopEvent();
 		});
 	}
 	public ngOnDestroy() {

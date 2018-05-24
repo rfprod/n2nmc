@@ -1,35 +1,36 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs';
+import { timeout, take, map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class UsersListService {
 
 	constructor(
-		private http: Http,
+		private http: HttpClient,
 		@Inject('Window') private window: Window
 	) {}
 
 	private appDataUrl: string = this.window.location.origin + '/api/users';
 
-	private extractData(res: Response): object {
-		const body = res.json();
-		return body || {};
+	private extractArray(res: any[]): any[] {
+		return res || [];
 	}
 
-	private handleError(error: any) {
+	private handleError(error: any): string {
 		const errMsg = (error.message) ? error.message :
 			error.status ? `$[error.status] - $[error.statusText]` : 'Server error';
 		console.log(errMsg);
-		return Observable.throw(errMsg);
+		return errMsg;
 	}
 
-	public getUsersList(): Observable<any[]> {
-		return this.http.get(this.appDataUrl)
-			.map(this.extractData)
-			.catch(this.handleError);
+	public getUsersList(): Observable<any> {
+		return this.http.get(this.appDataUrl).pipe(
+			timeout(10000),
+			take(1),
+			map(this.extractArray),
+			catchError(this.handleError)
+		);
 	}
 }

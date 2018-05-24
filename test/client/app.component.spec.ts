@@ -10,9 +10,6 @@ import { CustomServiceWorkerService } from '../../public/app/services/custom-ser
 
 import { TranslateService, TranslatePipe, TRANSLATION_PROVIDERS } from '../../public/app/translate/index';
 
-import { Observable } from 'rxjs/Rx';
-import { Subject } from 'rxjs/Subject';
-
 import { DummyComponent, AppNavComponentMock, AppInfoComponentMock } from './mocks/index';
 
 import { AppComponent } from '../../public/app/app.component';
@@ -60,7 +57,7 @@ describe('AppComponent', () => {
 	});
 
 	it('should have variables and methods defined', () => {
-		expect(this.component.ngUnsubscribe).toEqual(jasmine.any(Subject));
+		expect(this.component.subscriptions).toEqual(jasmine.any(Array));
 		expect(this.component.showSpinner).toEqual(jasmine.any(Boolean));
 		expect(this.component.showSpinner).toBeFalsy();
 		expect(this.component.startSpinner).toEqual(jasmine.any(Function));
@@ -132,23 +129,14 @@ describe('AppComponent', () => {
 		expect(this.component.isCurrentLanguage('en')).toBeTruthy(); // nothing happens
 	});
 
-	/*
-	*	TODO:app.component router events
-	*
-	it('should listen to router events and take action', () => {
-		this.component.ngOnInit();
-		this.component.router.navigate('').then(() => {
-			// expect some event
-		});
-	});
-	*/
-
 	it('should be properly destroyed', () => {
 		this.component.ngOnInit();
-		spyOn(this.component.ngUnsubscribe, 'next').and.callThrough();
-		spyOn(this.component.ngUnsubscribe, 'complete').and.callThrough();
+		for (const sub of this.component.subscriptions) {
+			spyOn(sub, 'unsubscribe').and.callThrough();
+		}
 		this.component.ngOnDestroy();
-		expect(this.component.ngUnsubscribe.next).toHaveBeenCalled();
-		expect(this.component.ngUnsubscribe.complete).toHaveBeenCalled();
+		for (const sub of this.component.subscriptions) {
+			expect(sub.unsubscribe).toHaveBeenCalled();
+		}
 	});
 });

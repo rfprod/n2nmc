@@ -1,19 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
+import { EventEmitterService } from './event-emitter.service';
 
 @Injectable()
 export class UserService {
-	private model: any = {
-		email: null,
-		token: null
-	};
-	private modelKeys: any[];
-	constructor() {
-		this.model.email = null;
-		this.model.token = null;
-		this.modelKeys = Object.keys(this.model);
+
+	constructor(
+		private emitter: EventEmitterService
+	) {
+		this.initializeModel();
 		if (typeof localStorage.getItem('userService') === 'undefined' && localStorage.userService) {
 			localStorage.setItem('userService', JSON.stringify(this.model));
 		} else {
@@ -22,32 +17,64 @@ export class UserService {
 		console.log(' >> USER SERVICE CONSTRUCTOR, model', this.model);
 	}
 
-	public getUser(): Observable<object> {
+	/**
+	 * User model.
+	 */
+	private model: any;
+
+	/**
+	 * Initializes user model.
+	 */
+	private initializeModel(): void {
+		this.model = { email: null, token: null };
+	}
+
+	/**
+	 * Returns user model.
+	 */
+	public getUser(): object {
 		return this.model;
 	}
 
+	/**
+	 * Updates user modal values.
+	 */
 	public SaveUser(newValues): void {
 		console.log('SaveUser', newValues);
-		if (newValues.hasOwnProperty('email')) {
+		if ('email' in newValues) {
 			this.model.email = newValues.email;
 		}
-		if (newValues.hasOwnProperty('token')) {
+		if ('token' in newValues) {
 			this.model.token = newValues.token;
 		}
 		localStorage.setItem('userService', JSON.stringify(this.model));
+		this.emitUserChangeEvent();
 	}
 
+	/**
+	 * Emits user change event.
+	 */
+	private emitUserChangeEvent(): void {
+		this.emitter.emitEvent({ user: this.model });
+	}
+
+	/**
+	 * Restores user model from browser local storage.
+	 */
 	public RestoreUser(): void {
 		console.log('Restore User, localStorage.userService:', localStorage.getItem('userService'));
 		if (typeof localStorage.getItem('userService') !== 'undefined' && localStorage.userService) {
 			this.model = JSON.parse(localStorage.getItem('userService'));
+			this.emitUserChangeEvent();
 		}
 	}
 
+	/**
+	 * Resets user model and browser local storage.
+	 */
 	public ResetUser(): void {
-		for (const key of this.modelKeys) {
-			this.model[key] = null;
-		}
+		this.initializeModel();
 		localStorage.setItem('userService', JSON.stringify(this.model));
+		this.emitUserChangeEvent();
 	}
 }

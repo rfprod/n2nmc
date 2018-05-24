@@ -210,10 +210,18 @@ gulp.task('pack-vendor-js', () => {
 
 gulp.task('pack-vendor-css', () => {
 	return gulp.src([
-		'./node_modules/bootstrap/dist/css/bootstrap.css',
-		'./node_modules/bootstrap/dist/css/bootstrap-theme.css',
+		/*
+		*	add paths to required third party css files
+		*/
 		'./node_modules/nvd3/build/nv.d3.css',
-		'./node_modules/components-font-awesome/css/font-awesome.css'
+		'./node_modules/components-font-awesome/css/fontawesome-all.css',
+		/*
+		*	Angular material theme should be chosen and loaded here
+		*/
+		'./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css'
+		//'./node_modules/@angular/material/prebuilt-themes/indigo-pink.css'
+		//'./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css'
+		//'./node_modules/@angular/material/prebuilt-themes/purple-green.css'
 	])
 		.pipe(plumber())
 		.pipe(concat('vendor-bundle.css'))
@@ -225,10 +233,14 @@ gulp.task('pack-vendor-css', () => {
 
 gulp.task('move-vendor-fonts', () => {
 	return gulp.src([
-		'./node_modules/bootstrap/dist/fonts/*.*',
-		'./node_modules/components-font-awesome/fonts/*.*'
+		'./node_modules/components-font-awesome/webfonts/*.*',
+		// material design icons
+		'./node_modules/material-design-icon-fonts/iconfont/*.eot',
+		'./node_modules/material-design-icon-fonts/iconfont/*.woff2',
+		'./node_modules/material-design-icon-fonts/iconfont/*.woff',
+		'./node_modules/material-design-icon-fonts/iconfont/*.ttf'
 	])
-		.pipe(gulp.dest('./public/fonts'));
+		.pipe(gulp.dest('./public/webfonts'));
 });
 
 gulp.task('sass-autoprefix-minify-css', () => {

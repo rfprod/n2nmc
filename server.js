@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 	* css, fonts, img, js - are directories containing client files
 	*/
 	//console.log('req.path:', req.path);
-	if (/(api|css|fonts|img|js)/.test(req.path)) {
+	if (/(api|css|webfonts|img|js)/.test(req.path)) {
 		return next();
 	} else {
 		res.sendFile(cwd + '/public/index.html');
