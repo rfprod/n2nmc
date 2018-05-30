@@ -16,6 +16,7 @@ Ng2NodeMongoCore - application core based on NodeJS, MongoDB and Angular.
 * `./public` - client
   * `./public/app` - main module and routes
     * `./public/app/components` - components' scripts (development)
+    * `./public/app/modules` - modules' scripts (development)
     * `./public/app/scss` - stylesheets (development)
     * `./public/app/services` - services' scripts (development)
     * `./public/app/views` - components' templates

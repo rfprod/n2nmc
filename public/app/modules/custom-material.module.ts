@@ -14,6 +14,8 @@ import {
 	MatTableModule, MatSortModule, MatPaginatorModule,
 	// misc
 	MatOptionModule, MatRippleModule,
+	// divider
+	MatDividerModule,
 	// icons
 	MatIconRegistry,
 	// tree
@@ -64,6 +66,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatTableModule, MatSortModule, MatPaginatorModule,
 		// misc
 		MatOptionModule, MatRippleModule,
+		// divider
+		MatDividerModule,
 		// cdk
 		OverlayModule,
 		// tree
@@ -84,6 +88,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 		MatTableModule, MatSortModule, MatPaginatorModule,
 		// misc
 		MatOptionModule, MatRippleModule,
+		// divider
+		MatDividerModule,
 		// cdk
 		OverlayModule,
 		// tree
