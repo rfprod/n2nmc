@@ -12,7 +12,7 @@ import { UsersListService } from '../services/users-list.service';
 export class DashboardDetailsComponent implements OnInit, OnDestroy {
 
 	constructor(
-		public el: ElementRef,
+		private el: ElementRef,
 		private emitter: EventEmitterService,
 		private usersListService: UsersListService
 	) {
@@ -22,6 +22,7 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 	private subscription: any;
 
 	public usersList: any[] = [];
+
 	public userDetails: any = [];
 
 	public errorMessage: string;
@@ -54,13 +55,13 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 *	search
 */
 	private searchValue: string;
-	get searchQuery() {
+	public get searchQuery() {
 		return this.searchValue;
 	}
-	set searchQuery(val) {
+	public set searchQuery(val) {
 		this.emitSearchValueChangeEvent(val);
 	}
-	private emitSearchValueChangeEvent(val) {
+	private emitSearchValueChangeEvent(val): void {
 		console.log('searchValue changed to:', val);
 		this.emitter.emitEvent({search: val});
 	}
@@ -69,46 +70,46 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 *	sort
 */
 	public orderProp = 'role';
-	get sortByCriterion() {
+	public get sortByCriterion() {
 		return this.orderProp;
 	}
-	set sortByCriterion(val) {
+	public set sortByCriterion(val) {
 		this.emitOrderPropChangeEvent(val);
 	}
-	private emitOrderPropChangeEvent(val) {
+	private emitOrderPropChangeEvent(val): void {
 		console.log('orderProp changed to:', val);
 		this.emitter.emitEvent({sort: val});
 	}
 
-	public ngOnInit() {
+	public ngOnInit(): void {
 		console.log('ngOnInit: DashboardDetailsComponent initialized');
 		this.emitter.emitSpinnerStartEvent();
 		this.emitter.emitEvent({route: '/data'});
 		this.emitter.emitEvent({appInfo: 'hide'});
-		this.subscription = this.emitter.getEmitter().subscribe((message) => {
-			console.log('/data consuming event:', JSON.stringify(message));
-			if (message.search || message.search === '') {
-				console.log('searching:', message.search);
+		this.subscription = this.emitter.getEmitter().subscribe((event: any) => {
+			console.log('/data consuming event:', JSON.stringify(event));
+			if (event.search || event.search === '') {
+				console.log('searching:', event.search);
 				const domElsUsername = this.el.nativeElement.querySelector('ul.listing').querySelectorAll('#full-name');
 				for (const usernameObj of domElsUsername) {
-					if (usernameObj.innerHTML.toLowerCase().indexOf(message.search.toLowerCase()) !== -1) {
+					if (usernameObj.innerHTML.toLowerCase().indexOf(event.search.toLowerCase()) !== -1) {
 						usernameObj.parentElement.parentElement.style.display = 'block';
 					} else {
 						usernameObj.parentElement.parentElement.style.display = 'none';
 					}
 				}
 			}
-			if (message.sort) {
+			if (event.sort) {
 				/*
 				* sorting rules
 				*/
-				console.log('sorting by:', message.sort);
-				if (message.sort === 'registered') {
+				console.log('sorting by:', event.sort);
+				if (event.sort === 'registered') {
 					this.usersList.sort((a, b) => {
 						return b.registered - a.registered;
 					});
 				}
-				if (message.sort === 'role') {
+				if (event.sort === 'role') {
 					this.usersList.sort((a, b) => {
 						if (a.role < b.role) { return -1; }
 						if (a.role > b.role) { return 1; }
@@ -121,7 +122,7 @@ export class DashboardDetailsComponent implements OnInit, OnDestroy {
 			this.emitter.emitSpinnerStopEvent();
 		});
 	}
-	public ngOnDestroy() {
+	public ngOnDestroy(): void {
 		console.log('ngOnDestroy: DashboardDetailsComponent destroyed');
 		this.subscription.unsubscribe();
 	}

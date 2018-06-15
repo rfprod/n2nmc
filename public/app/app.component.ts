@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ElementRef, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { EventEmitterService } from './services/event-emitter.service';
 import { TranslateService } from './translate/index';
 import { CustomServiceWorkerService } from './services/custom-service-worker.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 
 declare let $: JQueryStatic;
 
@@ -16,10 +16,7 @@ declare let $: JQueryStatic;
 		<span id="spinner" *ngIf="showSpinner">
 			<img src="../public/img/gears.svg"/>
 		</span>
-	`,
-	animations: [
-		trigger('empty', [])
-	]
+	`
 })
 export class AppComponent implements OnInit, OnDestroy {
 
@@ -34,39 +31,57 @@ export class AppComponent implements OnInit, OnDestroy {
 		console.log('this.el.nativeElement', this.el.nativeElement);
 	}
 
+	/**
+	 * Component subscriptions.
+	 */
 	private subscriptions: any[] = [];
 
+	/**
+	 * Indicates if spinner should be shown or not.
+	 */
 	public showSpinner: boolean = false;
 
-/*
-*	spinner controls
-*/
-	private startSpinner() {
+	/**
+	 * Shows spinner.
+	 */
+	private startSpinner(): void {
 		console.log('spinner start');
 		this.showSpinner = true;
 	}
-	private stopSpinner() {
+	/**
+	 * Hides spinner.
+	 */
+	private stopSpinner(): void {
 		console.log('spinner stop');
 		this.showSpinner = false;
 	}
 
-	public supportedLanguages: any[] = [
+	/**
+	 * Supported languages.
+	 */
+	public supportedLanguages: Array<{key: string, name: string}> = [
 		{ key: 'en', name: 'English' },
 		{ key: 'ru', name: 'Russian' }
 	];
 
-	public isCurrentLanguage(key: string) {
-		// check if selected one is a current language
+	/**
+	 * Resolves if language is current by key.
+	 * @param key language key
+	 */
+	public isCurrentLanguage(key: string): boolean {
 		return key === this.translate.currentLanguage;
 	}
-	public selectLanguage(key: string) {
-		// set current language
+	/**
+	 * Selects language.
+	 * @param key language key
+	 */
+	public selectLanguage(key: string): void {
 		if (!this.isCurrentLanguage(key)) {
 			this.translate.use(key);
 		}
 	}
 
-	public ngOnInit() {
+	public ngOnInit(): void {
 		console.log('ngOnInit: AppComponent initialized');
 
 		$('#init').remove(); // remove initialization text
@@ -109,7 +124,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.subscriptions.push(sub);
 	}
 
-	public ngOnDestroy() {
+	public ngOnDestroy(): void {
 		console.log('ngOnDestroy: AppComponent destroyed');
 		this.serviceWorker.disableServiceWorker();
 		for (const sub of this.subscriptions) {

@@ -13,6 +13,7 @@ declare let d3: any;
 	templateUrl: '/public/app/views/dashboard-intro.html',
 })
 export class DashboardIntroComponent implements OnInit, OnDestroy {
+
 	constructor(
 		private el: ElementRef,
 		private emitter: EventEmitterService,
@@ -21,9 +22,11 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 	) {
 		console.log('this.el.nativeElement:', this.el.nativeElement);
 	}
+
 	private subscriptions: any[] = [];
 
 	public title: string = 'Ng2NodeMongoCore (N2NMC)';
+
 	public description: string = 'Angular, NodeJS, MongoDB';
 
 	public chartOptions: object = {
@@ -51,7 +54,8 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 			},
 		},
 	};
-	public appUsageData: any[] = [
+
+	public appUsageData: Array<{key: string, y: number}> = [
 		{
 			key: 'Default',
 			y: 1,
@@ -73,14 +77,18 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 			y: 1,
 		}
 	];
-	public serverData: any = {
+
+	public serverData: {static: object[], dynamic: object[]} = {
 		static: [],
 		dynamic: [],
 	};
+
 	private host: string = window.location.host;
 	private wsUrl: string = (this.host.indexOf('localhost') !== -1) ? 'ws://' + this.host + '/api/app-diag/dynamic' : 'ws://' + this.host + ':8000/api/app-diag/dynamic';
 	private ws = new WebSocket(this.wsUrl);
+
 	public errorMessage: string;
+
 	private getServerStaticData(): Promise<any> {
 		const def = new CustomDeferredService<any>();
 		const sub = this.serverStaticDataService.getData().subscribe(
@@ -97,6 +105,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 		this.subscriptions.push(sub);
 		return def.promise;
 	}
+
 	private getPublicData(): Promise<any> {
 		const def = new CustomDeferredService<any>();
 		const sub = this.publicDataService.getData().subscribe(
@@ -116,7 +125,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 	}
 
 	public showModal: boolean = false;
-	public toggleModal() {
+	public toggleModal(): void {
 		if (this.showModal) {
 			this.ws.send(JSON.stringify({action: 'pause'}));
 		} else { this.ws.send(JSON.stringify({action: 'get'})); }
@@ -125,7 +134,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 
 	@ViewChild('chart') public nvd3: any;
 
-	public ngOnInit() {
+	public ngOnInit(): void {
 		console.log('ngOnInit: DashboardIntroComponent initialized');
 		this.emitter.emitSpinnerStartEvent();
 		this.emitter.emitEvent({route: '/intro'});
@@ -173,7 +182,7 @@ export class DashboardIntroComponent implements OnInit, OnDestroy {
 			});
 
 	}
-	public ngOnDestroy() {
+	public ngOnDestroy(): void {
 		console.log('ngOnDestroy: DashboardIntroComponent destroyed');
 		this.ws.close();
 		for (const sub of this.subscriptions) {

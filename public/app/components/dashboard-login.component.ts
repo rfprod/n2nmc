@@ -14,7 +14,7 @@ import { PublicDataService } from '../services/public-data.service';
 export class DashboardLoginComponent implements OnInit, OnDestroy {
 
 	constructor(
-		public el: ElementRef,
+		private el: ElementRef,
 		private emitter: EventEmitterService,
 		private fb: FormBuilder,
 		private userService: UserService,
@@ -31,9 +31,9 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	private loginForm: FormGroup;
+	public loginForm: FormGroup;
 
-	private resetForm() {
+	public resetForm(): void {
 		this.loginForm.reset({
 			email: null,
 			password: null
@@ -41,7 +41,7 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 		this.userService.ResetUser();
 	}
 
-	private submitForm() {
+	public submitForm(): void {
 		console.log('SUBMIT', this.loginForm);
 		if (this.loginForm.valid) {
 			this.errorMessage = null;
@@ -53,14 +53,14 @@ export class DashboardLoginComponent implements OnInit, OnDestroy {
 
 	public errorMessage: string;
 
-	public ngOnInit() {
+	public ngOnInit(): void {
 		console.log('ngOnInit: DashboardLoginComponent initialized');
 		this.emitter.emitSpinnerStartEvent();
 		this.emitter.emitEvent({route: '/login'});
 		this.emitter.emitEvent({appInfo: 'hide'});
 		this.emitter.emitSpinnerStopEvent();
 	}
-	public ngOnDestroy() {
+	public ngOnDestroy(): void {
 		console.log('ngOnDestroy: DashboardLoginComponent destroyed');
 	}
 }
