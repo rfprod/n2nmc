@@ -1,49 +1,28 @@
 'use strict';
 
-const gulp = require('gulp'),
-	runSequence = require('run-sequence'),
-	util = require('gulp-util'),
-	concat = require('gulp-concat'),
-	rename = require('gulp-rename'),
-	eslint = require('gulp-eslint'),
-	tslint = require('gulp-tslint'),
-	plumber = require('gulp-plumber'),
-	mocha = require('gulp-mocha'),
-	karmaServer = require('karma').Server,
-	uglify = require('gulp-uglify'),
-	sass = require('gulp-sass'),
-	cssnano = require('gulp-cssnano'),
-	autoprefixer = require('gulp-autoprefixer'),
-	systemjsBuilder = require('gulp-systemjs-builder'),
-	hashsum = require('gulp-hashsum'),
-	crypto = require('crypto'),
-	fs = require('fs'),
-	spawn = require('child_process').spawn,
-	exec = require('child_process').exec;
-let node,
-	mongo,
-	tsc;
+const gulp = require('gulp');
+const runSequence = require('run-sequence');
+const util = require('gulp-util');
+const concat = require('gulp-concat');
+const rename = require('gulp-rename');
+const eslint = require('gulp-eslint');
+const tslint = require('gulp-tslint');
+const plumber = require('gulp-plumber');
+const mocha = require('gulp-mocha');
+const karmaServer = require('karma').Server;
+const uglify = require('gulp-uglify');
+const sass = require('gulp-sass');
+const cssnano = require('gulp-cssnano');
+const autoprefixer = require('gulp-autoprefixer');
+const systemjsBuilder = require('gulp-systemjs-builder');
+const hashsum = require('gulp-hashsum');
+const crypto = require('crypto');
+const fs = require('fs');
+const spawn = require('child_process').spawn;
 
-function killProcessByName(name) {
-	exec('pgrep ' + name, (error, stdout, stderr) => {
-		if (error) {
-			// throw error;
-			console.log('killProcessByName, error', error);
-		}
-		if (stderr) console.log('stderr:', stderr);
-		if (stdout) {
-			//console.log('killing running processes:', stdout);
-			const runningProcessesIDs = stdout.match(/\d{3,6}/);
-			runningProcessesIDs.forEach((id) => {
-				exec('kill ' + id, (error, stdout, stderr) => {
-					if (error) throw error;
-					if (stderr) console.log('stdout:', stdout);
-					if (stdout) console.log('stderr:', stderr);
-				});
-			});
-		}
-	});
-}
+let node;
+let mongo;
+let tsc;
 
 /*
 *	hashsum identifies build
@@ -325,5 +304,4 @@ gulp.task('default', (done) => {
 
 process.on('exit', (code) => {
 	console.log(`PROCESS EXIT CODE ${code}`);
-	// killProcessByName('gulp');
 });
