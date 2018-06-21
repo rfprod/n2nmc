@@ -32,6 +32,7 @@ import { DashboardDetailsComponent } from './components/dashboard-details.compon
 
 import { CustomServiceWorkerService } from './services/custom-service-worker.service';
 import { CustomDeferredService } from './services/custom-deferred.service';
+import { CustomHttpHandlersService } from './services/custom-http-handlers.service';
 import { EventEmitterService } from './services/event-emitter.service';
 import { UserService } from './services/user.service';
 
@@ -44,9 +45,17 @@ import { NvD3Component } from 'ng2-nvd3';
 declare let $: JQueryStatic;
 
 @NgModule({
-	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent, DashboardLoginComponent, DashboardDetailsComponent, NvD3Component ],
-	imports 		: [ BrowserModule, BrowserAnimationsModule, FlexLayoutModule, CustomMaterialModule, FormsModule, ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(APP_ROUTES) ],
-	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy}, { provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService, CustomServiceWorkerService, CustomDeferredService, EventEmitterService, UserService, UsersListService, ServerStaticDataService, PublicDataService ],
+	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent,
+									DashboardLoginComponent, DashboardDetailsComponent, NvD3Component
+								],
+	imports 		: [ BrowserModule, BrowserAnimationsModule, FlexLayoutModule, CustomMaterialModule, FormsModule,
+									ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(APP_ROUTES)
+								],
+	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy},
+									{ provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService,
+									CustomServiceWorkerService, CustomDeferredService, CustomHttpHandlersService, EventEmitterService,
+									UserService, UsersListService, ServerStaticDataService, PublicDataService
+								],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],
 	bootstrap 	: [ AppComponent ],
 })

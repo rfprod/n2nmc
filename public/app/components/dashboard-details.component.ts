@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
 
 import { EventEmitterService } from '../services/event-emitter.service';
 import { CustomDeferredService } from '../services/custom-deferred.service';
+import { CustomHttpHandlersService } from '../services/custom-http-handlers.service';
 
 import { UsersListService } from '../services/users-list.service';
 

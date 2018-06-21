@@ -2,8 +2,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Http, BaseRequestOptions, Response, ResponseOptions, Headers } from '@angular/http';
-import { MockBackend, MockConnection } from '@angular/http/testing';
+
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -18,6 +19,7 @@ import { NvD3Component } from 'ng2-nvd3';
 
 import { EventEmitterService } from '../../../public/app/services/event-emitter.service';
 import { CustomDeferredService } from '../../../public/app/services/custom-deferred.service';
+import { CustomHttpHandlersService } from '../../../public/app/services/custom-http-handlers.service';
 
 import { TranslateService, TranslatePipe, TRANSLATION_PROVIDERS } from '../../../public/app/translate/index';
 
@@ -31,27 +33,25 @@ describe('DashboardIntroComponent', () => {
 	beforeEach((done) => {
 		TestBed.configureTestingModule({
 			declarations: [ TranslatePipe, NvD3Component, DashboardIntroComponent, NvD3Component ],
-			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, FlexLayoutModule, CustomMaterialModule ],
+			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, FlexLayoutModule, CustomMaterialModule, HttpClientTestingModule ],
 			providers: [
 				{ provide: 'Window', useValue: { location: { host: 'localhost', protocol: 'http' } } },
 				EventEmitterService,
 				TRANSLATION_PROVIDERS,
 				TranslateService,
-				BaseRequestOptions,
-				MockBackend,
-				{ provide: Http,
-					useFactory: (mockedBackend, requestOptions) => new Http(mockedBackend, requestOptions),
-					deps: [MockBackend, BaseRequestOptions]
+				{
+					provide: CustomHttpHandlersService,
+					useFactory: () => new CustomHttpHandlersService()
 				},
 				{
 					provide: PublicDataService,
-					useFactory: (http, window) => new PublicDataService(http, window),
-					deps: [Http, 'Window']
+					useFactory: (http, handlers, window) => new PublicDataService(http, handlers, window),
+					deps: [HttpClient, CustomHttpHandlersService, 'Window']
 				},
 				{
 					provide: ServerStaticDataService,
-					useFactory: (http, window) => new ServerStaticDataService(http, window),
-					deps: [Http, 'Window']
+					useFactory: (http, handlers, window) => new ServerStaticDataService(http, handlers, window),
+					deps: [HttpClient, CustomHttpHandlersService, 'Window']
 				}
 			],
 			schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
@@ -60,12 +60,15 @@ describe('DashboardIntroComponent', () => {
 			this.component = this.fixture.componentInstance;
 			this.serverStaticDataSrv = TestBed.get(ServerStaticDataService) as ServerStaticDataService;
 			this.publicDataSrv = TestBed.get(PublicDataService) as PublicDataService;
-			this.backend = TestBed.get(MockBackend) as MockBackend;
+			this.httpController = TestBed.get(HttpTestingController) as HttpTestingController;
 			done();
 		});
 	});
 
-	afterEach(() => this.backend.verifyNoPendingRequests());
+	afterEach(() => {
+		this.httpController.match((req: HttpRequest<any>): boolean => true).forEach((req: TestRequest) => req.flush({}));
+		this.httpController.verify();
+	});
 
 	it('should be defined', () => {
 		expect(this.component).toBeDefined();
@@ -123,6 +126,7 @@ describe('DashboardIntroComponent', () => {
 		for (const sub of this.component.subscriptions) {
 			spyOn(sub, 'unsubscribe').and.callThrough();
 		}
+		this.httpController.match((req: HttpRequest<any>): boolean => true).forEach((req: TestRequest) => req.flush({}));
 		this.component.ngOnDestroy();
 		for (const sub of this.component.subscriptions) {
 			expect(sub.unsubscribe).toHaveBeenCalled();

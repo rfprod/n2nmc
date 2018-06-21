@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { EventEmitterService } from '../services/event-emitter.service';
+import { CustomHttpHandlersService } from '../services/custom-http-handlers.service';
 import { UserService } from '../services/user.service';
 
 import { ServerStaticDataService } from '../services/server-static-data.service';

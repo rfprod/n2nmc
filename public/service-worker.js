@@ -8,7 +8,30 @@ function getCacheName() {
 		});
 	});
 }
+
 var cacheName;
+
+var staticAssets = [
+	// '/',
+	// '/public/index.html',
+	// '/public/app/views/admin-workspace.html',
+	// '/public/css/vendor-bundle.min.css',
+	// '/public/css/bundle.min.css',
+	'/public/webfonts/FontAwesome.otf',
+	'/public/webfonts/fontawesome-webfont.svg',
+	'/public/webfonts/fontawesome-webfont.ttf',
+	'/public/webfonts/fontawesome-webfont.eot',
+	'/public/webfonts/fontawesome-webfont.woff',
+	'/public/webfonts/fontawesome-webfont.woff2',
+	'/public/webfonts/MaterialIcons-Regular.ttf',
+	'/public/webfonts/MaterialIcons-Regular.eot',
+	'/public/webfonts/MaterialIcons-Regular.woff',
+	'/public/webfonts/MaterialIcons-Regular.woff2',
+	'/public/img/Angular_logo.svg',
+	'/public/img/Node.js_logo.svg',
+	// '/public/js/vendor-bundle.min.js',
+	// '/public/js/bundle.min.js'
+];
 
 self.addEventListener('install', function(event) {
 	console.log('>> serviceWorker, install event', event);
@@ -21,20 +44,7 @@ self.addEventListener('install', function(event) {
 			cacheName = gotCacheName;
 			console.log('cacheName', cacheName);
 			caches.open(cacheName).then(function(cache) {
-				return cache.addAll([
-					// '/',
-					// '/public/index.html',
-					// '/public/css/vendor-bundle.min.css',
-					// '/public/css/bundle.min.css',
-					'/public/fonts/FontAwesome.otf',
-					'/public/fonts/fontawesome-webfont.svg',
-					'/public/fonts/fontawesome-webfont.ttf',
-					'/public/fonts/fontawesome-webfont.eot',
-					'/public/fonts/fontawesome-webfont.woff',
-					'/public/fonts/fontawesome-webfont.woff2',
-					// '/public/js/vendor-bundle.min.js',
-					// '/public/js/bundle.min.js'
-				]).then(function() {
+				return cache.addAll(staticAssets).then(function() {
 					console.log('>> serviceWorker, cached static assets');
 					self.skipWaiting();
 				});
@@ -73,27 +83,7 @@ function updateCache() {
 					});
 				}).then(function() {
 					caches.open(cacheName).then(function(cache) {
-						cache.addAll([
-							// '/',
-							// '/public/index.html',
-							// '/public/app/views/admin-workspace.html',
-							// '/public/css/vendor-bundle.min.css',
-							// '/public/css/bundle.min.css',
-							'/public/fonts/FontAwesome.otf',
-							'/public/fonts/fontawesome-webfont.svg',
-							'/public/fonts/fontawesome-webfont.ttf',
-							'/public/fonts/fontawesome-webfont.eot',
-							'/public/fonts/fontawesome-webfont.woff',
-							'/public/fonts/fontawesome-webfont.woff2',
-							'/public/fonts/MaterialIcons-Regular.ttf',
-							'/public/fonts/MaterialIcons-Regular.eot',
-							'/public/fonts/MaterialIcons-Regular.woff',
-							'/public/fonts/MaterialIcons-Regular.woff2',
-							'/public/img/Angular_logo.svg',
-							'/public/img/Node.js_logo.svg',
-							// '/public/js/vendor-bundle.min.js',
-							// '/public/js/bundle.min.js'
-						]).then(function() {
+						cache.addAll(staticAssets).then(function() {
 							console.log('>> serviceWorker, updated cached static assets');
 							resolve();
 						});
