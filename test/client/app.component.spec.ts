@@ -8,7 +8,7 @@ import { EventEmitterService } from '../../public/app/services/event-emitter.ser
 import { CustomDeferredService } from '../../public/app/services/custom-deferred.service';
 import { CustomServiceWorkerService } from '../../public/app/services/custom-service-worker.service';
 
-import { TranslateService, TranslatePipe, TRANSLATION_PROVIDERS } from '../../public/app/translate/index';
+import { TranslateService, TranslateModule } from '../../public/app/translate/index';
 
 import { DummyComponent, AppNavComponentMock, AppInfoComponentMock } from './mocks/index';
 
@@ -18,10 +18,12 @@ describe('AppComponent', () => {
 
 	beforeEach((done) => {
 		TestBed.configureTestingModule({
-			declarations: [ TranslatePipe, AppComponent, AppNavComponentMock, AppInfoComponentMock, DummyComponent ],
-			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, RouterTestingModule.withRoutes([
-				{path: '', component: DummyComponent},
-			]) ],
+			declarations: [ AppComponent, AppNavComponentMock, AppInfoComponentMock, DummyComponent ],
+			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, TranslateModule.forRoot(),
+				RouterTestingModule.withRoutes([
+					{path: '', component: DummyComponent},
+				])
+			],
 			providers: [
 				{
 					provide: 'Window',
@@ -37,9 +39,7 @@ describe('AppComponent', () => {
 					sessionStorage: window.sessionStorage,
 				},
 				CustomServiceWorkerService,
-				EventEmitterService,
-				TRANSLATION_PROVIDERS,
-				TranslateService,
+				EventEmitterService
 			],
 			schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 		}).compileComponents().then(() => {

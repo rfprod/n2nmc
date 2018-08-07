@@ -21,7 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 
-import { TRANSLATION_PROVIDERS, TranslatePipe, TranslateService } from './translate/index';
+import { TranslateService, TranslateModule } from './translate/index';
 
 import { AppComponent } from './app.component';
 import { AppNavComponent } from './components/app-nav.component';
@@ -45,15 +45,15 @@ import { NvD3Component } from 'ng2-nvd3';
 declare let $: JQueryStatic;
 
 @NgModule({
-	declarations: [ AppComponent, TranslatePipe, AppNavComponent, AppInfoComponent, DashboardIntroComponent,
+	declarations: [ AppComponent, AppNavComponent, AppInfoComponent, DashboardIntroComponent,
 									DashboardLoginComponent, DashboardDetailsComponent, NvD3Component
 								],
 	imports 		: [ BrowserModule, BrowserAnimationsModule, FlexLayoutModule, CustomMaterialModule, FormsModule,
-									ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(APP_ROUTES)
+									ReactiveFormsModule, HttpClientModule, TranslateModule.forRoot(), RouterModule.forRoot(APP_ROUTES)
 								],
 	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy},
-									{ provide: 'Window', useValue: window }, TRANSLATION_PROVIDERS, TranslateService,
-									CustomServiceWorkerService, CustomDeferredService, CustomHttpHandlersService, EventEmitterService,
+									{ provide: 'Window', useValue: window }, CustomServiceWorkerService, CustomDeferredService,
+									CustomHttpHandlersService, EventEmitterService,
 									UserService, UsersListService, ServerStaticDataService, PublicDataService
 								],
 	schemas 		: [ CUSTOM_ELEMENTS_SCHEMA ],

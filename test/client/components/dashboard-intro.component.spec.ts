@@ -21,7 +21,7 @@ import { EventEmitterService } from '../../../public/app/services/event-emitter.
 import { CustomDeferredService } from '../../../public/app/services/custom-deferred.service';
 import { CustomHttpHandlersService } from '../../../public/app/services/custom-http-handlers.service';
 
-import { TranslateService, TranslatePipe, TRANSLATION_PROVIDERS } from '../../../public/app/translate/index';
+import { TranslateService, TranslateModule } from '../../../public/app/translate/index';
 
 import { ServerStaticDataService } from '../../../public/app/services/server-static-data.service';
 import { PublicDataService } from '../../../public/app/services/public-data.service';
@@ -32,13 +32,13 @@ describe('DashboardIntroComponent', () => {
 
 	beforeEach((done) => {
 		TestBed.configureTestingModule({
-			declarations: [ TranslatePipe, NvD3Component, DashboardIntroComponent, NvD3Component ],
-			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, FlexLayoutModule, CustomMaterialModule, HttpClientTestingModule ],
+			declarations: [ NvD3Component, DashboardIntroComponent, NvD3Component ],
+			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, FlexLayoutModule, CustomMaterialModule, HttpClientTestingModule,
+				TranslateModule.forRoot()
+			],
 			providers: [
 				{ provide: 'Window', useValue: { location: { host: 'localhost', protocol: 'http' } } },
 				EventEmitterService,
-				TRANSLATION_PROVIDERS,
-				TranslateService,
 				{
 					provide: CustomHttpHandlersService,
 					useFactory: () => new CustomHttpHandlersService()
