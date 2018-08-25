@@ -2,7 +2,6 @@
 
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
-const util = require('gulp-util');
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
 const eslint = require('gulp-eslint');
@@ -100,7 +99,7 @@ gulp.task('tsc', (done) => {
 gulp.task('server-test', () => {
 	return gulp.src(['./test/server/*.js'], { read: false })
 		.pipe(mocha({ reporter: 'spec' }))
-		.on('error', util.log);
+		.on('error', (err) => console.log('error', error));
 });
 
 gulp.task('client-unit-test', (done) => {
