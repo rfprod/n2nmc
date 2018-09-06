@@ -5,8 +5,6 @@ import { EventEmitterService } from './services/event-emitter.service';
 import { TranslateService } from './translate/index';
 import { CustomServiceWorkerService } from './services/custom-service-worker.service';
 
-declare let $: JQueryStatic;
-
 @Component({
 	selector: 'root',
 	template: `
@@ -81,10 +79,21 @@ export class AppComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	/**
+	 * Removes UI initialization object, kind of splashscreen.
+	 */
+	private removeUIinit(): void {
+		const initUIobj: HTMLElement = this.window.document.getElementById('init');
+		console.log('initUIobj', initUIobj);
+		if (initUIobj) {
+			initUIobj.parentNode.removeChild(initUIobj);
+		}
+	}
+
 	public ngOnInit(): void {
 		console.log('ngOnInit: AppComponent initialized');
 
-		$('#init').remove(); // remove initialization text
+		this.removeUIinit();
 
 		// event emitter control messages
 		let sub = this.emitter.getEmitter().subscribe((message: any) => {
@@ -126,7 +135,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	public ngOnDestroy(): void {
 		console.log('ngOnDestroy: AppComponent destroyed');
-		this.serviceWorker.disableServiceWorker();
+		this.emitter.emitEvent({serviceWorker: 'deinitialize'});
 		for (const sub of this.subscriptions) {
 			sub.unsubscribe();
 		}

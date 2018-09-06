@@ -99,7 +99,7 @@ gulp.task('tsc', (done) => {
 gulp.task('server-test', () => {
 	return gulp.src(['./test/server/*.js'], { read: false })
 		.pipe(mocha({ reporter: 'spec' }))
-		.on('error', (err) => console.log('error', error));
+		.on('error', (error) => console.log('error', error));
 });
 
 gulp.task('client-unit-test', (done) => {
@@ -109,8 +109,7 @@ gulp.task('client-unit-test', (done) => {
 	});
 
 	server.on('browser_error', (browser, err) => {
-		console.log('=====\nKarma > Run Failed\n=====\n', err);
-		throw err;
+		throw new Error('=====\nKarma > Run Failed\n=====\n', err);
 	});
 
 	server.on('run_complete', (browsers, results) => {
@@ -131,8 +130,7 @@ gulp.task('client-unit-test-single-run', (done) => {
 	});
 
 	server.on('browser_error', (browser, err) => {
-		console.log('=====\nKarma > Run Failed\n=====\n', err);
-		throw err;
+		throw new Error('=====\nKarma > Run Failed\n=====\n', err);
 	});
 
 	server.on('run_complete', (browsers, results) => {
@@ -168,12 +166,8 @@ gulp.task('pack-vendor-js', () => {
 	*	components related to design, styling, data visualization etc.
 	*/
 	return gulp.src([
-		// sequence is essential
-		'./node_modules/jquery/dist/jquery.js',
-		'./node_modules/bootstrap/dist/js/bootstrap.js',
 		'./node_modules/d3/d3.js',
 		'./node_modules/nvd3/build/nv.d3.js',
-		// angular dependencies start here
 		'./node_modules/zone.js/dist/zone.min.js',
 		'./node_modules/reflect-metadata/Reflect.js',
 		'./node_modules/web-animations-js/web-animations.min.js'
