@@ -37,7 +37,20 @@ describe('DashboardIntroComponent', () => {
 				TranslateModule.forRoot()
 			],
 			providers: [
-				{ provide: 'Window', useValue: { location: { host: 'localhost', protocol: 'http' } } },
+				{
+					provide: 'Window',
+					useValue: { 
+						location: window.location,
+						document: window.document,
+						navigator: {
+							language: 'en',
+							languages: ['en'],
+							serviceWorker: window.navigator.serviceWorker
+						},
+						localStorage: window.localStorage,
+						sessionStorage: window.sessionStorage,
+					}
+				},
 				EventEmitterService,
 				{
 					provide: CustomHttpHandlersService,

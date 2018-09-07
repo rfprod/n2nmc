@@ -42,8 +42,6 @@ import { PublicDataService } from './services/public-data.service';
 
 import { NvD3Component } from 'ng2-nvd3';
 
-declare let $: JQueryStatic;
-
 @NgModule({
 	declarations: [ AppComponent, AppNavComponent, AppInfoComponent, DashboardIntroComponent,
 									DashboardLoginComponent, DashboardDetailsComponent, NvD3Component

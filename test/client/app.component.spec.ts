@@ -29,14 +29,15 @@ describe('AppComponent', () => {
 					provide: 'Window',
 					useValue: {
 						location: window.location,
+						document: window.document,
 						navigator: {
 							language: 'en',
 							languages: ['en'],
 							serviceWorker: window.navigator.serviceWorker
-						}
-					},
-					localStorage: window.localStorage,
-					sessionStorage: window.sessionStorage,
+						},
+						localStorage: window.localStorage,
+						sessionStorage: window.sessionStorage,
+					}
 				},
 				CustomServiceWorkerService,
 				EventEmitterService
