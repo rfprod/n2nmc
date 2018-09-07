@@ -34,7 +34,7 @@ describe('DashboardIntroComponent', () => {
 		TestBed.configureTestingModule({
 			declarations: [ NvD3Component, DashboardIntroComponent, NvD3Component ],
 			imports: [ BrowserDynamicTestingModule, NoopAnimationsModule, FlexLayoutModule, CustomMaterialModule, HttpClientTestingModule,
-				TranslateModule.forRoot()
+				TranslateModule
 			],
 			providers: [
 				{

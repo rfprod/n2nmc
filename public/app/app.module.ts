@@ -18,8 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { RouterModule } from '@angular/router';
-import { APP_ROUTES } from './app.routes';
+import { AppRoutingModule } from './app-routing.module';
 
 import { TranslateService, TranslateModule } from './translate/index';
 
@@ -47,7 +46,7 @@ import { NvD3Component } from 'ng2-nvd3';
 									DashboardLoginComponent, DashboardDetailsComponent, NvD3Component
 								],
 	imports 		: [ BrowserModule, BrowserAnimationsModule, FlexLayoutModule, CustomMaterialModule, FormsModule,
-									ReactiveFormsModule, HttpClientModule, TranslateModule.forRoot(), RouterModule.forRoot(APP_ROUTES)
+									ReactiveFormsModule, HttpClientModule, TranslateModule, AppRoutingModule
 								],
 	providers 	: [ {provide: APP_BASE_HREF, useValue: '/'}, {provide: LocationStrategy, useClass: PathLocationStrategy},
 									{ provide: 'Window', useValue: window }, CustomServiceWorkerService, CustomDeferredService,
